@@ -1,13 +1,8 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import { FilterMatchMode } from '@primevue/core/api'
-  import Column from 'primevue/column'
-  import DataTable from 'primevue/datatable'
   import DetailButton from '../button/DetailButton.vue'
   import { useTracesStore } from '@/stores/traces'
-  import InputText from 'primevue/inputtext'
-  import Slider from 'primevue/slider'
-  import MultiSelect from 'primevue/multiselect'
 
   const traceStore = useTracesStore()
   const filters = ref({
@@ -30,6 +25,7 @@
     :globalFilterFields="['start', 'finish', 'elevation', 'distance']"
     filterDisplay="menu"
     dataKey="id"
+    style="padding: 2rem"
   >
     <Column field="start" header="Départ" style="width: 12rem" :showFilterMatchModes="false">
       <template #filter="{ filterModel, filterCallback }">
@@ -59,7 +55,7 @@
     </Column>
     <Column field="distance" header="Distance" style="width: 12rem" :showFilterMatchModes="false">
       <template #filter="{ filterModel, filterCallback }">
-        <Slider v-model="filterModel.value" range min="50" max="300" @change="filterCallback()" />
+        <Slider v-model="filterModel.value" range :min="50" :max="300" @change="filterCallback()" />
         <InputText v-model="filterModel.value" placeholder="Entre 50 et 300 km" disabled />
       </template>
       <template #body="{ data }">
@@ -68,7 +64,13 @@
     </Column>
     <Column field="elevation" header="Dénivelé" style="width: 12rem" :showFilterMatchModes="false">
       <template #filter="{ filterModel, filterCallback }">
-        <Slider v-model="filterModel.value" range min="300" max="3500" @change="filterCallback()" />
+        <Slider
+          v-model="filterModel.value"
+          range
+          :min="300"
+          :max="3500"
+          @change="filterCallback()"
+        />
         <InputText v-model="filterModel.value" placeholder="Entre 300 et 3500 D+" disabled />
       </template>
       <template #body="{ data }">
