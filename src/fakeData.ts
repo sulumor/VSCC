@@ -9,6 +9,7 @@ export const fakeDatas: Traces = [
     finish: 'Saint-Ouen-Sur-Seine',
     distance: 218,
     elevation: 2756,
+    description: 'Trace CC vers Cergy modifié pour retourner à Saint Ouen sans passer par Cergy',
     created_at: new Date().toString(),
     updated_at: null
   },
@@ -20,6 +21,7 @@ export const fakeDatas: Traces = [
     finish: 'Clichy',
     distance: 71,
     elevation: 702,
+    description: "Boucle jusqu'à l'Isle-Adam",
     created_at: new Date().toString(),
     updated_at: null
   },
@@ -31,6 +33,7 @@ export const fakeDatas: Traces = [
     finish: 'Clichy',
     distance: 82,
     elevation: 632,
+    description: 'Boucle passant par Viarmes puis Marly-la-Ville',
     created_at: new Date().toString(),
     updated_at: null
   }
