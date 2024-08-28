@@ -13,7 +13,7 @@
 </script>
 
 <template>
-  <Menubar :model="items" class="menu">
+  <Menubar :model="items" style="background-color: #343838">
     <template #item="{ item, props }">
       <router-link v-slot="{ href, navigate }" :to="item.route" custom>
         <a v-ripple :href="href" v-bind="props.action" @click="navigate">
@@ -24,8 +24,4 @@
   </Menubar>
 </template>
 
-<style scoped>
-  .menu {
-    background-color: #343838;
-  }
-</style>
+<style scoped></style>

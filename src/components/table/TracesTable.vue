@@ -16,6 +16,8 @@
   const finishes = ref([
     ...new Set(traceStore.traces.map((trace: { finish: string }) => trace.finish))
   ])
+
+  //TODO mettre les classes Tailwind
 </script>
 
 <template>
@@ -25,7 +27,6 @@
     :globalFilterFields="['start', 'finish', 'elevation', 'distance']"
     filterDisplay="menu"
     dataKey="id"
-    style="padding: 2rem"
   >
     <Column field="start" header="Départ" style="width: 12rem" :showFilterMatchModes="false">
       <template #filter="{ filterModel, filterCallback }">

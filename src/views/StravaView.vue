@@ -11,9 +11,17 @@
 </script>
 
 <template>
-  <main>
-    <StravaCard v-if="currentTrace" :id="currentTrace.stravaId" :hash="currentTrace.stravaHash" />
-    <div v-else>Nous n'avons pas retrouvé votre trace. Veuillez réessayer</div>
+  <main class="flex flex-wrap" v-if="currentTrace">
+    <Card class="grow">
+      <template #title> {{ currentTrace.start }} -> {{ currentTrace.finish }} </template>
+      <template #content>
+        <p>Description : {{ currentTrace.description }}</p>
+      </template>
+    </Card>
+    <StravaCard :id="currentTrace.stravaId" :hash="currentTrace.stravaHash" />
+  </main>
+  <main v-else>
+    <Message severity="error"> Nous n'avons pas retrouvé votre trace. Veuillez réessayer </Message>
   </main>
 </template>
 
