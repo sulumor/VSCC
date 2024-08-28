@@ -4,6 +4,7 @@ export type Trace = {
   stravaHash: string
   start: string
   finish: string
+  description: string
   distance: number
   elevation: number
   created_at: string
