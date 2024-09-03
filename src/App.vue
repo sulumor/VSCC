@@ -1,17 +1,17 @@
 <script setup lang="ts">
   import { RouterView } from 'vue-router'
   import NavBar from './components/navbar/NavBar.vue'
+  import LogoImg from './components/logo/LogoImg.vue'
 </script>
 
 <template>
   <header>
-    <div class="img-container">
-      <img src="@/assets/logo.png" alt="" />
-    </div>
+    <LogoImg />
     <NavBar />
   </header>
 
   <RouterView />
+  <Toast position="bottom-right" />
 </template>
 
 <style scoped>
@@ -22,10 +22,5 @@
     align-items: center;
     width: 100%;
     background-color: #343838;
-  }
-
-  .img-container {
-    width: 50%;
-    padding: 0.4rem 2rem;
   }
 </style>

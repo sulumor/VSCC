@@ -7,7 +7,8 @@
       route: '/'
     },
     {
-      label: "Ajout d'une trace"
+      label: "Ajout d'une trace",
+      route: '/new-trace'
     }
   ])
 </script>
