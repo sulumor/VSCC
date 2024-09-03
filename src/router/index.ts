@@ -20,6 +20,10 @@ const router = createRouter({
     {
       path: '/:id',
       component: () => import('@/views/StravaView.vue')
+    },
+    {
+      path: '/new-trace',
+      component: () => import('@/views/AddTraceView.vue')
     }
   ]
 })
