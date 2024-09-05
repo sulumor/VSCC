@@ -100,11 +100,15 @@
           class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-3 p-2"
         >
           <div
-            class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col h-[28.125rem]"
+            class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col"
           >
             <div class="pt-6 flex flex-col justify-center align-middle gap-8">
-              <div class="bg-surface-50 flex justify-center rounded">
-                <img class="rounded w-full" :src="`${item.image}`" :alt="item.name" />
+              <div class="bg-surface-50 flex justify-center rounded h-32">
+                <img
+                  class="rounded w-full"
+                  :src="item.image"
+                  :alt="`Dessin de la trace de ${item.start} à ${item.finish}`"
+                />
               </div>
               <div class="text-lg font-medium mt-1 h-14">{{ item.start }} -> {{ item.finish }}</div>
 
