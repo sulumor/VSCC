@@ -1,9 +1,11 @@
 <template>
   <main>
-    <TracesTable />
+    <!-- <TracesTable /> -->
+    <DatasDisplay />
   </main>
 </template>
 
 <script setup lang="ts">
-  import TracesTable from '@/components/table/TracesTable.vue'
+  import DatasDisplay from '@/components/table/DatasDisplay.vue'
+  // import TracesTable from '@/components/table/TracesTable.vue'
 </script>

@@ -17,7 +17,7 @@
     ...new Set(traceStore.traces.map((trace: { finish: string }) => trace.finish))
   ])
 
-  //TODO mettre les classes Tailwind
+  //TODO transformer la table en dataView
 </script>
 
 <template>
