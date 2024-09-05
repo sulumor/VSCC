@@ -56,7 +56,7 @@
 </script>
 
 <template>
-  <form class="p-4 flex flex-col gap-8" @submit="onSubmit">
+  <form class="p-4 flex flex-col gap-8 md:w-[70%] md:mx-auto md:my-0" @submit="onSubmit">
     <div class="flex justify-evenly gap-3">
       <TextInput
         id="start"
@@ -99,12 +99,14 @@
     </div>
     <div class="flex justify-evenly flex-wrap gap-8">
       <TextArea
+        id="description"
         v-model="description"
         label="Description"
         aria="description-help"
         :errors="errors.description"
       />
       <TextArea
+        id="stravaEmbed"
         v-model="stravaEmbed"
         label="Intégration Strava"
         aria="stravaEmbed-help"

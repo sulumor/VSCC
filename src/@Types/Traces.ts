@@ -7,7 +7,7 @@ export type Trace = {
   description: string
   distance: number
   elevation: number
-  image: string
+  image?: string
   created_at?: string
   updated_at?: string | null
 }
