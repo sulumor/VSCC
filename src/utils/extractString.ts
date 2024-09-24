@@ -2,7 +2,7 @@ export function getInformationsFromStravaEmbedString(embedString: string) {
   const stravaId = getId(embedString)
   const stravaHash = getHash(embedString)
   if (!stravaId) return null
-  return { stravaId, stravaHash }
+  return { strava_id: stravaId, strava_hash: stravaHash }
 }
 
 function getId(embedString: string): string | null {

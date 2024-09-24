@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { Nullable } from '@/@Types/Nullable'
 
-  const model = defineModel<Nullable<string>>({ required: true })
+  const model = defineModel<Nullable<string | undefined>>({ required: true })
   defineProps<{
     id: string
     label: string

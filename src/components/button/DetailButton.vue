@@ -5,7 +5,7 @@
 </script>
 
 <template>
-  <Button severity="secondary" label="Détails" as="router-link" :to="'/' + id" />
+  <Button severity="secondary" label="Voir les détails" as="router-link" :to="'/' + id" />
 </template>
 
 <style></style>

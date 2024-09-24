@@ -7,14 +7,23 @@
   import { useForm } from 'vee-validate'
   import { TraceSchema } from '@/schemas/TraceSchema'
   import { useTracesStore } from '@/stores/traces'
+  import type { Trace } from '@/@Types/Traces'
+  import DeleteButton from '../button/DeleteButton.vue'
   import CheckBoxInput from '../input/CheckBoxInput.vue'
 
   const traceStore = useTracesStore()
 
   const toast = useToast()
 
-  const { defineField, handleSubmit, resetForm, errors } = useForm({
-    validationSchema: TraceSchema
+  const props = defineProps<{ trace: Trace }>()
+
+  const { defineField, handleSubmit, errors } = useForm({
+    validationSchema: TraceSchema,
+    initialValues: {
+      stravaEmbed: `<div class="strava-embed-placeholder" data-embed-type="route" data-embed-id="${props.trace.strava_id}" data-style="standard" data-map-hash="${props.trace.strava_hash}" data-from-embed="true"></div>`,
+      ...props.trace,
+      switch: props.trace.switch ?? ' '
+    }
   })
 
   const [start] = defineField('start')
@@ -27,22 +36,21 @@
   const [stravaEmbed] = defineField('stravaEmbed')
 
   const onSubmit = handleSubmit((values) => {
-    const { stravaEmbed, ...data } = values
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { stravaEmbed, created_at, updated_at, ...data } = values
     const stravaData = getInformationsFromStravaEmbedString(stravaEmbed)
     if (!stravaData) {
       toast.add({
         severity: 'error',
         summary: 'Une erreur est survenue',
-        detail:
-          "Une erreur est survenue lors de l'enregistrement de la trace. Veuillez réessayer plus tard",
+        detail: 'Une erreur est survenue. Veuillez réessayer plus tard',
         life: 3000
       })
       return
     }
     const datas = { ...stravaData, ...data }
-    traceStore.addNewTrace(datas)
+    traceStore.editATrace(datas)
     router.push('/')
-    resetForm()
   })
 </script>
 
@@ -115,7 +123,8 @@
         :errors="errors.stravaEmbed"
       />
     </div>
-    <Button type="submit" class="w-full mt-4">J'enregistre cette trace</Button>
+    <Button type="submit" class="w-full mt-4">Je modifie cette trace</Button>
+    <DeleteButton :id="props.trace.id" />
   </form>
 </template>
 

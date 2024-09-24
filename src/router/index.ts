@@ -16,6 +16,10 @@ const router = createRouter({
     {
       path: '/new-trace',
       component: () => import('@/views/AddTraceView.vue')
+    },
+    {
+      path: '/edit-trace/:id',
+      component: () => import('@/views/EditTraceView.vue')
     }
   ]
 })

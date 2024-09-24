@@ -3,6 +3,7 @@
   import { onMounted, ref } from 'vue'
   import DetailButton from '../button/DetailButton.vue'
   import DataFilter from '../filters/DataFilter.vue'
+  import EditButton from '../button/EditButton.vue'
 
   const traceStore = useTracesStore()
 
@@ -185,6 +186,7 @@
               >
 
               <DetailButton :id="item.id" />
+              <EditButton :id="item.id" />
             </div>
           </div>
         </div>
