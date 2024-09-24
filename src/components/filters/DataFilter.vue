@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import { useTracesStore } from '@/stores/traces'
+  import type { Trace } from '@/@Types/Traces'
 
   const traceStore = useTracesStore()
 
@@ -10,20 +11,33 @@
   const selectedElevations = ref()
   const elevationMessage = ref('Entre 300 et 3500 m D+')
 
+  let traceFilted = defineModel({ required: true })
+
+  const distanceFiltre = ref()
+  const elevationFiltre = ref()
+
   const filterDistances = () => {
-    selectedElevations.value = ''
-    traceStore.filterDistances(selectedDistances)
+    distanceFiltre.value = traceStore.filterTraceByParams('distance', selectedDistances)
     distanceMessage.value = `Entre ${selectedDistances.value[0]} et ${selectedDistances.value[1]} kms`
+    if (!elevationFiltre.value) traceFilted.value = distanceFiltre.value
+    else
+      traceFilted.value = distanceFiltre.value.filter((trace: Trace) =>
+        elevationFiltre.value.includes(trace)
+      )
   }
 
   const filterElevations = () => {
-    selectedDistances.value = ''
-    traceStore.filterElevations(selectedElevations)
+    elevationFiltre.value = traceStore.filterTraceByParams('elevation', selectedElevations)
     elevationMessage.value = `Entre ${selectedElevations.value[0]} et ${selectedElevations.value[1]} m D+`
+    if (!distanceFiltre.value) traceFilted.value = elevationFiltre.value
+    else
+      traceFilted.value = elevationFiltre.value.filter((trace: Trace) =>
+        distanceFiltre.value.includes(trace)
+      )
   }
 
   const resetFilters = () => {
-    traceStore.traceFilted = traceStore.traces
+    traceFilted.value = traceStore.traces
     selectedDistances.value = ''
     distanceMessage.value = `Entre 50 et 300 kms`
     selectedElevations.value = ''

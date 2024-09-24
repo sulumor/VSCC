@@ -37,6 +37,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Select: typeof import('primevue/select')['default']
+    Skeleton: typeof import('primevue/skeleton')['default']
     Slider: typeof import('primevue/slider')['default']
     StravaCard: typeof import('./src/components/card/StravaCard.vue')['default']
     SuccessToast: typeof import('./src/components/toast/SuccessToast.vue')['default']

@@ -18,7 +18,7 @@
         <p>Description : {{ currentTrace.description }}</p>
       </template>
     </Card>
-    <StravaCard :id="currentTrace.stravaId" :hash="currentTrace.stravaHash" />
+    <StravaCard :id="currentTrace.strava_id" :hash="currentTrace.strava_hash" />
   </main>
   <main v-else>
     <Message severity="error"> Nous n'avons pas retrouvé votre trace. Veuillez réessayer </Message>

@@ -1,15 +1,18 @@
 export type Trace = {
-  id?: number
-  stravaId: string
-  stravaHash: string | null
+  [key: string]: string | number | boolean | Date | undefined
+  id: number
+  strava_id: string
+  strava_hash: string
   start: string
   finish: string
-  description: string
+  switch?: string
+  is_a_loop: boolean
   distance: number
   elevation: number
-  image?: string
-  created_at?: string
-  updated_at?: string | null
+  description: string
+  image: string
+  created_at: Date
+  updated_at?: Date
 }
 
 export type Traces = Trace[]

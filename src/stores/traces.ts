@@ -1,45 +1,51 @@
 import { ref, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Trace, Traces } from '@/@Types/Traces'
-import { fakeDatas } from '@/fakeData'
+import crud from '@/utils/crud'
+import type { AxiosResponse } from 'axios'
+import { useToast } from 'primevue/usetoast'
+
+interface Response {
+  data: AxiosResponse<any>['data']
+  status?: AxiosResponse<any>['status']
+}
 
 export const useTracesStore = defineStore('traces', () => {
-  const traces: Ref<Traces> = ref(fakeDatas)
-  // const doubleCount = computed(() => count.value * 2)
-  // function increment() {
-  //   count.value++
-  // }
-  const traceFilted = ref(traces.value)
+  const toast = useToast()
+  const traces = ref()
+  const loading = ref(false)
 
   const findOneById: (id: string) => Trace | undefined = (id) => {
-    return traces.value.find((trace) => trace.id === Number.parseInt(id, 10))
+    if (!traces.value) initAllTraces()
+    return traces.value?.find((trace: Trace) => trace.id === Number.parseInt(id, 10))
   }
 
-  const filterDistances = (selectedDistances: Ref<any>) => {
-    traceFilted.value = traces.value.filter((trace: { distance: number }) => {
-      if (
-        trace.distance > selectedDistances.value[0] &&
-        trace.distance < selectedDistances.value[1]
-      )
-        return trace
+  const filterTraceByParams = (params: string, filter: Ref<any>) => {
+    if (!traces.value) initAllTraces()
+    return traces.value.filter((trace: Trace) => {
+      if (trace[params]! > filter.value[0] && trace[params]! < filter.value[1]) return trace
     })
   }
 
-  const filterElevations = (selectedElevations: Ref<any>) => {
-    traceFilted.value = traces.value.filter((trace: { elevation: number }) => {
-      if (
-        trace.elevation > selectedElevations.value[0] &&
-        trace.elevation < selectedElevations.value[1]
-      )
-        return trace
-    })
+  const initAllTraces = async () => {
+    loading.value = true
+    const response: Response = await crud.get('api/traces')
+    if (response.status === 200) traces.value = response.data
+    else {
+      toast.add({
+        severity: 'error',
+        summary: 'Une erreur est survenue',
+        detail: `${response.data.error}`
+      })
+    }
+    loading.value = false
   }
 
   return {
     traces,
-    traceFilted,
     findOneById,
-    filterDistances,
-    filterElevations
+    filterTraceByParams,
+    initAllTraces,
+    loading
   }
 })
