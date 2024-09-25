@@ -8,6 +8,7 @@
   import { TraceSchema } from '@/schemas/TraceSchema'
   import { useTracesStore } from '@/stores/traces'
   import CheckBoxInput from '../input/CheckBoxInput.vue'
+  import { errorToast } from '@/utils/toast'
 
   const traceStore = useTracesStore()
 
@@ -26,23 +27,21 @@
   const [description] = defineField('description')
   const [stravaEmbed] = defineField('stravaEmbed')
 
-  const onSubmit = handleSubmit((values) => {
+  const onSubmit = handleSubmit(async (values) => {
     const { stravaEmbed, ...data } = values
     const stravaData = getInformationsFromStravaEmbedString(stravaEmbed)
     if (!stravaData) {
-      toast.add({
-        severity: 'error',
-        summary: 'Une erreur est survenue',
-        detail:
-          "Une erreur est survenue lors de l'enregistrement de la trace. Veuillez réessayer plus tard",
-        life: 3000
-      })
+      errorToast(
+        toast,
+        "Une erreur est survenue lors de l'enregistrement de la trace. Veuillez réessayer plus tard"
+      )
       return
     }
     const datas = { ...stravaData, ...data }
-    traceStore.addNewTrace(datas)
-    router.push('/')
-    resetForm()
+    if (await traceStore.addNewTrace(datas)) {
+      router.push('/')
+      resetForm()
+    }
   })
 </script>
 

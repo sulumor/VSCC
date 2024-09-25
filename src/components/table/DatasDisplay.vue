@@ -148,6 +148,7 @@
               >
 
               <DetailButton :id="item.id" />
+              <EditButton :id="item.id" />
             </div>
           </div>
         </div>

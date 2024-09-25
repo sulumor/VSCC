@@ -3,13 +3,14 @@
   import NumberInput from '../input/NumberInput.vue'
   import { getInformationsFromStravaEmbedString } from '@/utils/extractString'
   import { useToast } from 'primevue/usetoast'
-  import router from '@/router'
   import { useForm } from 'vee-validate'
   import { TraceSchema } from '@/schemas/TraceSchema'
   import { useTracesStore } from '@/stores/traces'
   import type { Trace } from '@/@Types/Traces'
   import DeleteButton from '../button/DeleteButton.vue'
   import CheckBoxInput from '../input/CheckBoxInput.vue'
+  import { errorToast } from '@/utils/toast'
+  import router from '@/router'
 
   const traceStore = useTracesStore()
 
@@ -35,22 +36,16 @@
   const [description] = defineField('description')
   const [stravaEmbed] = defineField('stravaEmbed')
 
-  const onSubmit = handleSubmit((values) => {
+  const onSubmit = handleSubmit(async (values) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { stravaEmbed, created_at, updated_at, ...data } = values
     const stravaData = getInformationsFromStravaEmbedString(stravaEmbed)
     if (!stravaData) {
-      toast.add({
-        severity: 'error',
-        summary: 'Une erreur est survenue',
-        detail: 'Une erreur est survenue. Veuillez réessayer plus tard',
-        life: 3000
-      })
+      errorToast(toast, 'Une erreur est survenue. Veuillez réessayer plus tard')
       return
     }
     const datas = { ...stravaData, ...data }
-    traceStore.editATrace(datas)
-    router.push('/')
+    if (await traceStore.editATrace(datas)) router.push('/')
   })
 </script>
 
