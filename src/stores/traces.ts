@@ -1,15 +1,10 @@
 import { ref, type Ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Trace } from '@/@Types/Traces'
 import crud from '@/utils/crud'
-import type { AxiosResponse } from 'axios'
 import { useToast } from 'primevue/usetoast'
 import { errorToast, successToast } from '@/utils/toast'
-
-interface Response {
-  data: AxiosResponse<any>['data']
-  status?: AxiosResponse<any>['status']
-}
+import type { Response } from '@/@Types/Response'
+import type { Trace } from '@/@Types/Traces'
 
 export const useTracesStore = defineStore('traces', () => {
   const toast = useToast()
@@ -18,7 +13,7 @@ export const useTracesStore = defineStore('traces', () => {
 
   const findOneById: (id: string) => Trace | undefined = (id) => {
     if (!traces.value) initAllTraces()
-    return traces.value?.find((trace: Trace) => trace.id === Number.parseInt(id, 10))
+    return traces.value.find((trace: Trace) => trace.id === Number.parseInt(id, 10))
   }
 
   const filterTraceByParams = (params: string, filter: Ref<any>) => {

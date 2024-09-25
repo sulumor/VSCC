@@ -1,9 +1,5 @@
-import axios, { AxiosError, type AxiosResponse } from 'axios'
-
-interface Response {
-  data: AxiosResponse<any>['data']
-  status?: AxiosResponse<any>['status']
-}
+import axios, { AxiosError } from 'axios'
+import type { Response } from '@/@Types/Response'
 
 axios.defaults.withCredentials = true
 
@@ -15,42 +11,32 @@ class Crud {
   }
 
   async get(path: string): Promise<Response> {
-    try {
-      const res = await axios.get(`${this.BASE_URL}/${path}`, {
+    return await this.handleErrors(
+      axios.get(`${this.BASE_URL}/${path}`, {
         headers: {
           'Content-Type': 'application/json'
         }
       })
-      return { status: res.status, data: res.data }
-    } catch (error) {
-      if (error instanceof AxiosError && error.response)
-        return { status: error.response.status, data: error.response.data }
-      return { status: 500, data: 'Erreur interne du serveur' }
-    }
+    )
   }
 
   async getWithToken(path: string): Promise<Response> {
-    try {
-      const res = await axios.get(`${this.BASE_URL}/${path}`, {
+    return await this.handleErrors(
+      axios.get(`${this.BASE_URL}/${path}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer token`
         }
       })
-      return { status: res.status, data: res.data }
-    } catch (error) {
-      if (error instanceof AxiosError && error.response)
-        return { status: error.response.status, data: error.response.data }
-      return { status: 500, data: 'Erreur interne du serveur' }
-    }
+    )
   }
 
   async post(
     path: string,
     body: { [k: string]: string | number | boolean | Date | [] | undefined | null }
   ): Promise<Response> {
-    try {
-      const res = await axios.post(
+    return await this.handleErrors(
+      axios.post(
         `${this.BASE_URL}/${path}`,
         { ...body },
         {
@@ -60,20 +46,15 @@ class Crud {
           }
         }
       )
-      return { status: res.status, data: res.data }
-    } catch (error) {
-      if (error instanceof AxiosError && error.response)
-        return { status: error.response.status, data: error.response.data }
-      return { status: 500, data: 'Erreur interne du serveur' }
-    }
+    )
   }
 
   async update(
     path: string,
     body: { [k: string]: string | number | boolean | Date | [] | undefined | null }
   ): Promise<Response> {
-    try {
-      const res = await axios.patch(
+    return await this.handleErrors(
+      axios.patch(
         `${this.BASE_URL}/${path}`,
         { ...body },
         {
@@ -83,21 +64,22 @@ class Crud {
           }
         }
       )
-      return { status: res.status, data: res.data }
-    } catch (error) {
-      if (error instanceof AxiosError && error.response)
-        return { status: error.response.status, data: error.response.data }
-      return { status: 500, data: 'Erreur interne du serveur' }
-    }
+    )
   }
 
   async delete(path: string): Promise<Response> {
-    try {
-      const res = await axios.delete(`${this.BASE_URL}/${path}`, {
+    return await this.handleErrors(
+      axios.delete(`${this.BASE_URL}/${path}`, {
         headers: {
           Authorization: `Bearer token`
         }
       })
+    )
+  }
+
+  private async handleErrors(promise: Promise<Response>): Promise<Response> {
+    try {
+      const res = await promise
       return { status: res.status, data: res.data }
     } catch (error) {
       if (error instanceof AxiosError && error.response)

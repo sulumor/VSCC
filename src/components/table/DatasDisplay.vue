@@ -4,6 +4,7 @@
   import DetailButton from '../button/DetailButton.vue'
   import DataFilter from '../filters/DataFilter.vue'
   import EditButton from '../button/EditButton.vue'
+  import type { Trace } from '@/@Types/Traces'
 
   const traceStore = useTracesStore()
 
@@ -39,7 +40,9 @@
   const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
   onMounted(async () => {
     while (traceStore.loading) await wait(1000)
-    traceFilted.value = traceStore.traces
+    traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
+      return a.id - b.id
+    })
   })
 </script>
 
