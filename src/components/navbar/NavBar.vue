@@ -1,17 +1,36 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import LogoImg from '../logo/LogoImg.vue'
+  import { ref, watchEffect } from 'vue'
+  import { useUsersStore } from '@/stores/users'
 
-  const items = ref([
-    {
-      label: 'Accueil',
-      route: '/'
-    },
-    {
-      label: "Ajout d'une trace",
-      route: '/new-trace'
-    }
-  ])
+  const userStore = useUsersStore()
+  const items = ref()
+
+  watchEffect(() => {
+    items.value = [
+      {
+        label: 'Accueil',
+        route: '/',
+        connected: true
+      },
+      {
+        label: "Ajouter d'une trace",
+        route: '/new-trace',
+        connected: userStore.isAuthenticated
+      },
+      {
+        label: 'Connexion',
+        route: '/login',
+        connected: !userStore.isAuthenticated
+      },
+      {
+        label: 'Deconnexion',
+        connected: userStore.isAuthenticated,
+        command: () => {
+          userStore.logout()
+        }
+      }
+    ]
+  })
 </script>
 
 <template>
@@ -20,11 +39,19 @@
       <LogoImg />
     </template>
     <template #item="{ item, props }">
-      <router-link v-slot="{ href, navigate }" :to="item.route" custom>
+      <router-link
+        v-if="item.connected && item.route"
+        v-slot="{ href, navigate }"
+        :to="item.route"
+        custom
+      >
         <a v-ripple :href="href" v-bind="props.action" @click="navigate">
           <span>{{ item.label }}</span>
         </a>
       </router-link>
+      <a v-if="item.connected && !item.route" v-ripple :href="item.href" v-bind="props.action">
+        <span>{{ item.label }}</span>
+      </a>
     </template>
   </Menubar>
 </template>

@@ -1,12 +1,11 @@
 <script setup lang="ts">
   import { useTracesStore } from '@/stores/traces'
   import { onMounted, ref } from 'vue'
-  import DetailButton from '../button/DetailButton.vue'
-  import DataFilter from '../filters/DataFilter.vue'
-  import EditButton from '../button/EditButton.vue'
   import type { Trace } from '@/@Types/Traces'
+  import { useUsersStore } from '@/stores/users'
 
   const traceStore = useTracesStore()
+  const userStore = useUsersStore()
 
   const rows = window.innerWidth > 640 ? 8 : 4
   const layout = ref<'grid' | 'list' | undefined>(window.innerWidth > 640 ? 'grid' : 'list')
@@ -151,7 +150,7 @@
               >
 
               <DetailButton :id="item.id" />
-              <EditButton :id="item.id" />
+              <EditButton v-if="userStore.isAuthenticated" :id="item.id" />
             </div>
           </div>
         </div>
@@ -190,7 +189,7 @@
               >
 
               <DetailButton :id="item.id" />
-              <EditButton :id="item.id" />
+              <EditButton v-if="userStore.isAuthenticated" :id="item.id" />
             </div>
           </div>
         </div>

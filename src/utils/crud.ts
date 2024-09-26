@@ -25,7 +25,7 @@ class Crud {
       axios.get(`${this.BASE_URL}/${path}`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer token`
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
     )
@@ -42,7 +42,7 @@ class Crud {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer token`
+            Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         }
       )
@@ -60,7 +60,7 @@ class Crud {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer token`
+            Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         }
       )
@@ -71,7 +71,7 @@ class Crud {
     return await this.handleErrors(
       axios.delete(`${this.BASE_URL}/${path}`, {
         headers: {
-          Authorization: `Bearer token`
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
     )

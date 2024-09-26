@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { useUsersStore } from '@/stores/users'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,11 +16,23 @@ const router = createRouter({
     },
     {
       path: '/new-trace',
-      component: () => import('@/views/AddTraceView.vue')
+      component: () => import('@/views/AddTraceView.vue'),
+      beforeEnter: () => {
+        const userStore = useUsersStore()
+        if (!userStore.isAuthenticated) return '/login'
+      }
     },
     {
       path: '/edit-trace/:id',
-      component: () => import('@/views/EditTraceView.vue')
+      component: () => import('@/views/EditTraceView.vue'),
+      beforeEnter: () => {
+        const userStore = useUsersStore()
+        if (!userStore.isAuthenticated) return '/login'
+      }
+    },
+    {
+      path: '/login',
+      component: () => import('@/views/SignUpView.vue')
     }
   ]
 })
