@@ -22,7 +22,6 @@ class Crud {
   }
 
   async getWithToken(path: string): Promise<Response> {
-    await this.checkToken()
     return await this.handleErrors(
       axios.get(`${this.BASE_URL}/${path}`, {
         headers: {
@@ -97,9 +96,10 @@ class Crud {
     const token = localStorage.getItem('token')
     if (!token) return
     const tokenDecrypted = jwtDecode(token)
-    if (tokenDecrypted.exp! < Date.now()) {
+    if (tokenDecrypted.exp! < Math.floor(Date.now() / 1000)) {
       const res = await this.get('auth/refresh_token')
-      localStorage.setItem('token', res.data.accessToken)
+      if (res.status === 200) localStorage.setItem('token', res.data.accessToken)
+      else localStorage.clear()
     }
   }
 }

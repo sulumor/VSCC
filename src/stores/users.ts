@@ -49,5 +49,18 @@ export const useUsersStore = defineStore('users', () => {
     successToast(toast, 'Vous êtes bien déconnecté(e). A bientôt')
   }
 
-  return { user, login, register, logout, isAuthenticated, isAdmin }
+  const loadUserFromToken = async () => {
+    if (localStorage.getItem('token')) {
+      loading.value = true
+      const res: Response = await crud.getWithToken('auth/user')
+      if (res.status === 200) {
+        localStorage.setItem('token', res.data.accessToken)
+        user.value = jwtDecode(res.data.accessToken)
+      } else errorToast(toast, res.data.error)
+
+      loading.value = false
+    }
+  }
+
+  return { user, login, register, logout, isAuthenticated, isAdmin, loadUserFromToken }
 })

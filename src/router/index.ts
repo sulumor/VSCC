@@ -19,7 +19,7 @@ const router = createRouter({
       component: () => import('@/views/AddTraceView.vue'),
       beforeEnter: () => {
         const userStore = useUsersStore()
-        if (!userStore.isAuthenticated) return '/login'
+        if (!userStore.isAuthenticated) return '/'
       }
     },
     {
@@ -27,7 +27,7 @@ const router = createRouter({
       component: () => import('@/views/EditTraceView.vue'),
       beforeEnter: () => {
         const userStore = useUsersStore()
-        if (!userStore.isAuthenticated) return '/login'
+        if (!userStore.isAuthenticated) return '/'
       }
     },
     {
