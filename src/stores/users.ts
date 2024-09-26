@@ -1,5 +1,6 @@
 import type { Response } from '@/@Types/Response'
 import type { UserBody, UserLogin } from '@/@Types/Users'
+import router from '@/router'
 import crud from '@/utils/crud'
 import { errorToast, successToast } from '@/utils/toast'
 import { jwtDecode } from 'jwt-decode'
@@ -44,6 +45,7 @@ export const useUsersStore = defineStore('users', () => {
     await crud.delete('auth/refresh_token')
     user.value = null
     loading.value = false
+    router.push('/')
     successToast(toast, 'Vous êtes bien déconnecté(e). A bientôt')
   }
 

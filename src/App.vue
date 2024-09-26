@@ -14,7 +14,7 @@
 <template>
   <NavBar />
   <RouterView />
-  <Toast position="bottom-right" />
+  <Toast position="top-center" />
 </template>
 
 <style></style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useTracesStore } from '@/stores/traces'
-  import { onMounted, ref } from 'vue'
+  import { ref, watchEffect } from 'vue'
   import type { Trace } from '@/@Types/Traces'
   import { useUsersStore } from '@/stores/users'
 
@@ -36,12 +36,11 @@
     }
   }
 
-  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-  onMounted(async () => {
-    while (traceStore.loading) await wait(1000)
-    traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
-      return a.id - b.id
-    })
+  watchEffect(() => {
+    if (traceStore.traces)
+      traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
+        return a.id - b.id
+      })
   })
 </script>
 
