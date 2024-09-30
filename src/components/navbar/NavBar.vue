@@ -13,6 +13,11 @@
         connected: true
       },
       {
+        label: 'Utilisateurs',
+        route: '/users',
+        connected: true
+      },
+      {
         label: "Ajouter d'une trace",
         route: '/new-trace',
         connected: userStore.isAuthenticated
