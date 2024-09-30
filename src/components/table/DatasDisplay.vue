@@ -3,6 +3,7 @@
   import { ref, watchEffect } from 'vue'
   import type { Trace } from '@/@Types/Traces'
   import { useUsersStore } from '@/stores/users'
+  import CloudinaryImage from '../image/CloudinaryImage.vue'
 
   const traceStore = useTracesStore()
   const userStore = useUsersStore()
@@ -134,10 +135,8 @@
             :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }"
           >
             <div class="w-full sm:max-w-96 sm:w-2/3">
-              <img
-                class="block xl:block mx-auto rounded w-full"
-                :src="item.image"
-                :alt="`Dessin de la trace de ${item.start} à ${item.finish}`"
+              <CloudinaryImage
+                :image="item.image.includes('Screen') ? 'hmmiqsh7isuvovoyp62g' : item.image"
               />
             </div>
 
@@ -168,17 +167,10 @@
           >
             <div class="pt-6 flex flex-col justify-center align-middle gap-8">
               <div class="bg-surface-50 flex justify-center rounded h-32">
-                <img
-                  v-if="item.image"
-                  class="rounded w-full"
-                  :src="item.image"
-                  :alt="`Dessin de la trace de ${item.start} à ${item.finish}`"
-                />
-                <img
-                  v-else
-                  class="rounded w-full"
-                  :src="'src/assets/logo.png'"
-                  :alt="`Dessin de la trace de ${item.start} à ${item.finish}`"
+                <CloudinaryImage
+                  :image="
+                    item.image.includes('Screen') ? 'hmmiqsh7isuvovoyp62g' : 'q6sbapsjnvevpxwppifj'
+                  "
                 />
               </div>
               <div class="text-lg font-medium mt-1 h-14">{{ item.start }} -> {{ item.finish }}</div>

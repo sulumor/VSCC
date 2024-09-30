@@ -6,6 +6,7 @@ export const TraceSchema = yup
     finish: yup.string().required("Une ville d'arrivée est obligatoire").label('finish'),
     is_a_loop: yup.boolean().default(false),
     switch: yup.string().label('switch'),
+    image: yup.string().label('image'),
     distance: yup.number().required('La distance de la trace est obligatoire').label('distance'),
     elevation: yup.number().required('Le dénivelé (en m) est requis').label('elevation'),
     description: yup

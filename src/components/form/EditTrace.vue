@@ -33,12 +33,14 @@
   const [switchCity] = defineField('switch')
   const [distance] = defineField('distance')
   const [elevation] = defineField('elevation')
+  const [image] = defineField('image')
   const [description] = defineField('description')
   const [stravaEmbed] = defineField('stravaEmbed')
 
   const onSubmit = handleSubmit(async (values) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { stravaEmbed, created_at, updated_at, ...data } = values
+
     const stravaData = getInformationsFromStravaEmbedString(stravaEmbed)
     if (!stravaData) {
       errorToast(toast, 'Une erreur est survenue. Veuillez réessayer plus tard')
@@ -50,7 +52,7 @@
 </script>
 
 <template>
-  <form class="p-4 flex flex-col gap-8 md:w-[70%] md:mx-auto md:my-3" @submit="onSubmit">
+  <form class="p-4 flex flex-col gap-8 md:w-[70%] md:mx-auto my-3" @submit="onSubmit">
     <div class="flex justify-evenly gap-3">
       <TextInput
         id="start"
@@ -102,6 +104,7 @@
         class="basis-1/2"
       />
     </div>
+    <UploadImage v-model="image" label="Modifier l'image" />
     <div class="flex justify-evenly flex-wrap gap-8">
       <TextArea
         id="description"

@@ -81,6 +81,28 @@ class Crud {
     )
   }
 
+  async uploadToCloudinary(file: any) {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_PRESET)
+
+      const url = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME}/upload`
+      const res = await fetch(url, {
+        method: 'POST',
+        body: formData,
+        mode: 'cors'
+      })
+      const data = await res.json()
+      return { data }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+        throw new Error(error.message)
+      }
+    }
+  }
+
   private async handleErrors(promise: Promise<Response>): Promise<Response> {
     try {
       const res = await promise

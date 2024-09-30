@@ -24,6 +24,7 @@
   const [switchCity] = defineField('switch')
   const [distance] = defineField('distance')
   const [elevation] = defineField('elevation')
+  const [image] = defineField('image')
   const [description] = defineField('description')
   const [stravaEmbed] = defineField('stravaEmbed')
 
@@ -98,6 +99,7 @@
         class="basis-1/2"
       />
     </div>
+    <UploadImage v-model="image" label="Ajouter une image" />
     <div class="flex justify-evenly flex-wrap gap-8">
       <TextArea
         id="description"

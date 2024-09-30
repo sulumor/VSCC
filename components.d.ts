@@ -12,6 +12,7 @@ declare module 'vue' {
     Card: typeof import('primevue/card')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     CheckBoxInput: typeof import('./src/components/input/CheckBoxInput.vue')['default']
+    CloudinaryImage: typeof import('./src/components/image/CloudinaryImage.vue')['default']
     Column: typeof import('primevue/column')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
     DataFilter: typeof import('./src/components/filters/DataFilter.vue')['default']
@@ -23,6 +24,7 @@ declare module 'vue' {
     DetailButton: typeof import('./src/components/button/DetailButton.vue')['default']
     EditButton: typeof import('./src/components/button/EditButton.vue')['default']
     EditTrace: typeof import('./src/components/form/EditTrace.vue')['default']
+    FileUpload: typeof import('primevue/fileupload')['default']
     FloatLabel: typeof import('primevue/floatlabel')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
@@ -43,6 +45,7 @@ declare module 'vue' {
     Password: typeof import('primevue/password')['default']
     PasswordInput: typeof import('./src/components/input/PasswordInput.vue')['default']
     Popover: typeof import('primevue/popover')['default']
+    QuickStart: typeof import('./src/components/QuickStart.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Select: typeof import('primevue/select')['default']
@@ -58,6 +61,7 @@ declare module 'vue' {
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     Toast: typeof import('primevue/toast')['default']
     TracesTable: typeof import('./src/components/table/TracesTable.vue')['default']
+    UploadImage: typeof import('./src/components/image/UploadImage.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
   export interface ComponentCustomProperties {

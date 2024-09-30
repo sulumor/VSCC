@@ -16,6 +16,7 @@
 
   const onSubmit = handleSubmit(async (values) => {
     await userStore.login(values as UserLogin)
+    resetForm()
   })
 </script>
 
