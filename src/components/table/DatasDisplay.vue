@@ -36,12 +36,45 @@
       sortKey.value = sortValue
     }
   }
+  const starts = ref()
+  const finishes = ref()
+  const startSelected = ref()
+  const finishSelected = ref()
 
-  watchEffect(() => {
-    if (traceStore.traces)
+  const filterStart = () => {
+    if (startSelected.value.length > 0) {
+      traceFilted.value = traceStore.traces.filter((trace: Trace) =>
+        startSelected.value.includes(trace.start)
+      )
+    } else {
       traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
         return a.id - b.id
       })
+    }
+  }
+
+  const filterFinish = () => {
+    if (finishSelected.value.length > 0) {
+      traceFilted.value = traceStore.traces.filter((trace: Trace) =>
+        finishSelected.value.includes(trace.finish)
+      )
+    } else {
+      traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
+        return a.id - b.id
+      })
+    }
+  }
+
+  watchEffect(() => {
+    if (traceStore.traces) {
+      traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
+        return a.id - b.id
+      })
+      starts.value = [...new Set(traceStore.traces.map((trace: { start: string }) => trace.start))]
+      finishes.value = [
+        ...new Set(traceStore.traces.map((trace: { finish: string }) => trace.finish))
+      ]
+    }
   })
 </script>
 
@@ -58,6 +91,18 @@
     <template #header>
       <div class="flex gap-4">
         <DataFilter v-model="traceFilted" />
+        <MultiSelect
+          v-model="startSelected"
+          :options="starts"
+          placeholder="Ville de départ(s)"
+          @change="filterStart"
+        />
+        <MultiSelect
+          v-model="finishSelected"
+          :options="finishes"
+          placeholder="Ville d'arrivée(s)"
+          @change="filterFinish"
+        />
         <Select
           v-model="sortKey"
           :options="sortDistanceOptions"
