@@ -12,7 +12,7 @@ export const errorToast = (toast: ToastServiceMethods, message: string) => {
 export const successToast = (toast: ToastServiceMethods, message: string) => {
   toast.add({
     severity: 'success',
-    summary: "Tous c'est bien passé",
+    summary: "Tout c'est bien passé",
     detail: message,
     life: 3000
   })

@@ -12,11 +12,11 @@ const router = createRouter({
     },
     {
       path: '/:id',
-      component: () => import('@/views/StravaView.vue')
+      component: () => import('@/views/trace/StravaView.vue')
     },
     {
       path: '/new-trace',
-      component: () => import('@/views/AddTraceView.vue'),
+      component: () => import('@/views/trace/AddTraceView.vue'),
       beforeEnter: () => {
         const userStore = useUsersStore()
         if (!userStore.isAuthenticated) return '/'
@@ -24,7 +24,7 @@ const router = createRouter({
     },
     {
       path: '/edit-trace/:id',
-      component: () => import('@/views/EditTraceView.vue'),
+      component: () => import('@/views/trace/EditTraceView.vue'),
       beforeEnter: () => {
         const userStore = useUsersStore()
         if (!userStore.isAuthenticated) return '/'
@@ -32,7 +32,15 @@ const router = createRouter({
     },
     {
       path: '/login',
-      component: () => import('@/views/SignUpView.vue')
+      component: () => import('@/views/auth/SignUpView.vue')
+    },
+    {
+      path: '/forgot-password',
+      component: () => import('@/views/auth/ForgotPasswordView.vue')
+    },
+    {
+      path: '/reset-password/:id/:token',
+      component: () => import('@/views/auth/ResetPasswordView.vue')
     }
   ]
 })

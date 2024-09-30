@@ -21,7 +21,7 @@
 </script>
 
 <template>
-  <form class="p-4 flex flex-col gap-8 md:w-[50%] md:mx-auto md:my-3" @submit="onSubmit">
+  <form class="p-4 flex flex-col gap-8" @submit="onSubmit">
     <TextInput id="email" label="Email" v-model="email" aria="email-help" :errors="errors.email" />
     <PasswordInput
       id="password"

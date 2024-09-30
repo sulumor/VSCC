@@ -13,7 +13,10 @@
 <template>
   <main class="flex flex-wrap" v-if="currentTrace">
     <Card class="grow">
-      <template #title> {{ currentTrace.start }} -> {{ currentTrace.finish }} </template>
+      <template #title>
+        {{ currentTrace?.start }} ->
+        {{ currentTrace?.switch ? currentTrace?.switch + ' -> ' : ' ' }} {{ currentTrace?.finish }}
+      </template>
       <template #content>
         <p>Description : {{ currentTrace.description }}</p>
       </template>
