@@ -1,86 +1,49 @@
 <script setup lang="ts">
-  import { useTracesStore } from '@/stores/traces'
-  import { ref, watchEffect } from 'vue'
+  import { computed, ref } from 'vue'
   import type { Trace } from '@/@Types/Traces'
   import { useUsersStore } from '@/stores/users'
   import CloudinaryImage from '../image/CloudinaryImage.vue'
+  import { useQuery } from '@tanstack/vue-query'
+  import crud from '@/utils/crud'
+  import SortFilter from '../filters/SortFilter.vue'
+  import DataFilter from '../filters/DataFilter.vue'
 
-  const traceStore = useTracesStore()
   const userStore = useUsersStore()
+  let queries: string = ''
+
+  const getTraces = async () => await crud.get(`api/traces${queries}`)
+  const { data, isError, error, isPending, isFetching } = useQuery({
+    queryKey: ['traces'],
+    queryFn: getTraces
+  })
 
   const rows = window.innerWidth > 640 ? 8 : 4
   const layout = ref<'grid' | 'list' | undefined>(window.innerWidth > 640 ? 'grid' : 'list')
   const sortKey = ref()
   const sortOrder = ref()
   const sortField = ref()
-  const traceFilted = ref()
-  const sortDistanceOptions = ref([
-    { label: 'Distance croissante', value: 'distance' },
-    { label: 'Distance décroissante', value: '!distance' }
-  ])
-  const sortElevationOptions = ref([
-    { label: 'Dénivelé croissant', value: 'elevation' },
-    { label: 'Dénivelé décroissant', value: '!elevation' }
-  ])
-  const onSortChange = (event: any) => {
-    const value = event.value.value
-    const sortValue = event.value
 
-    if (value.indexOf('!') === 0) {
-      sortOrder.value = -1
-      sortField.value = value.substring(1, value.length)
-      sortKey.value = sortValue
-    } else {
-      sortOrder.value = 1
-      sortField.value = value
-      sortKey.value = sortValue
-    }
-  }
-  const starts = ref()
-  const finishes = ref()
-  const startSelected = ref()
-  const finishSelected = ref()
+  const selectedDistances = ref([50, 300])
 
-  const filterStart = () => {
-    if (startSelected.value.length > 0) {
-      traceFilted.value = traceStore.traces.filter((trace: Trace) =>
-        startSelected.value.includes(trace.start)
+  const selectedElevations = ref([300, 3500])
+
+  const filteredData = computed(() => {
+    if (!data.value) return []
+    return data.value.filter((trace: Trace) => {
+      if (
+        trace.distance > selectedDistances.value[0] &&
+        trace.distance < selectedDistances.value[1] &&
+        trace.elevation > selectedElevations.value[0] &&
+        trace.elevation < selectedElevations.value[1]
       )
-    } else {
-      traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
-        return a.id - b.id
-      })
-    }
-  }
-
-  const filterFinish = () => {
-    if (finishSelected.value.length > 0) {
-      traceFilted.value = traceStore.traces.filter((trace: Trace) =>
-        finishSelected.value.includes(trace.finish)
-      )
-    } else {
-      traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
-        return a.id - b.id
-      })
-    }
-  }
-
-  watchEffect(() => {
-    if (traceStore.traces) {
-      traceFilted.value = traceStore.traces.sort((a: Trace, b: Trace) => {
-        return a.id - b.id
-      })
-      starts.value = [...new Set(traceStore.traces.map((trace: { start: string }) => trace.start))]
-      finishes.value = [
-        ...new Set(traceStore.traces.map((trace: { finish: string }) => trace.finish))
-      ]
-    }
+        return trace
+    })
   })
 </script>
 
 <template>
   <DataView
-    :value="traceFilted"
+    :value="filteredData"
     :layout="layout"
     :dataKey="layout"
     :sortOrder="sortOrder"
@@ -89,87 +52,24 @@
     :rows="rows"
   >
     <template #header>
-      <div class="flex gap-4">
-        <DataFilter v-model="traceFilted" />
-        <MultiSelect
-          v-model="startSelected"
-          :options="starts"
-          placeholder="Ville de départ(s)"
-          @change="filterStart"
-        />
-        <MultiSelect
-          v-model="finishSelected"
-          :options="finishes"
-          placeholder="Ville d'arrivée(s)"
-          @change="filterFinish"
-        />
-        <Select
-          v-model="sortKey"
-          :options="sortDistanceOptions"
-          optionLabel="label"
-          placeholder="Trier par distance"
-          @change="onSortChange($event)"
-        />
-        <Select
-          v-model="sortKey"
-          :options="sortElevationOptions"
-          optionLabel="label"
-          placeholder="Trier par dénivelé"
-          @change="onSortChange($event)"
-        />
-      </div>
+      <DataFilter
+        v-model:selectedDistances="selectedDistances"
+        v-model:selectedElevations="selectedElevations"
+        v-model:queries="queries"
+      />
+      <SortFilter
+        v-model:sortKey="sortKey"
+        v-model:sortOrder="sortOrder"
+        v-model:sortField="sortField"
+      />
     </template>
 
     <template #empty>
-      <div v-if="traceStore.loading">
-        <div v-if="layout === 'grid'" class="grid grid-cols-12 gap-4">
-          <div v-for="i in 9" :key="i" class="col-span-12 sm:col-span-6 xl:col-span-3 p-2">
-            <div
-              class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded"
-            >
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <Skeleton width="6rem" height="2rem" />
-                <Skeleton width="3rem" height="1rem" />
-              </div>
-              <div class="flex flex-col items-center gap-4 py-8">
-                <Skeleton width="75%" height="10rem" />
-                <Skeleton width="8rem" height="2rem" />
-                <Skeleton width="6rem" height="1rem" />
-              </div>
-              <div class="flex items-center justify-between">
-                <Skeleton width="4rem" height="2rem" />
-                <Skeleton width="6rem" height="1rem" shape="circle" size="3rem" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div v-else class="flex flex-col">
-          <div v-for="i in 6" :key="i">
-            <div
-              class="flex flex-col xl:flex-row xl:items-start p-6 gap-6"
-              :class="{ 'border-t border-surface-200 dark:border-surface-700': i !== 0 }"
-            >
-              <Skeleton class="!w-9/12 sm:!w-64 xl:!w-40 !h-24 mx-auto" />
-              <div
-                class="flex flex-col sm:flex-row justify-between items-center xl:items-start flex-1 gap-6"
-              >
-                <div class="flex flex-col items-center sm:items-start gap-4">
-                  <Skeleton width="8rem" height="2rem" />
-                  <Skeleton width="6rem" height="1rem" />
-
-                  <div class="flex items-center gap-4">
-                    <Skeleton width="6rem" height="1rem" />
-                    <Skeleton width="3rem" height="1rem" />
-                  </div>
-                </div>
-                <div class="flex sm:flex-col items-center sm:items-end gap-4 sm:gap-2">
-                  <Skeleton width="4rem" height="2rem" />
-                  <Skeleton size="3rem" shape="circle" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div v-if="isPending || isFetching">
+        <ProgressSpinner aria-label="Loading" />
+      </div>
+      <div v-if="isError">
+        {{ error!.message }}
       </div>
     </template>
     <template #list="slotProps">
@@ -201,7 +101,13 @@
     </template>
 
     <template #grid="slotProps">
-      <div class="grid grid-cols-12 gap-4">
+      <div v-if="isFetching">
+        <ProgressSpinner />
+      </div>
+      <div v-if="isError">
+        {{ error!.message }}
+      </div>
+      <div v-else class="grid grid-cols-12 gap-4">
         <div
           v-for="(item, index) in slotProps.items"
           :key="index"

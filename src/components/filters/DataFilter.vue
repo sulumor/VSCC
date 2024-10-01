@@ -1,84 +1,97 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import { useTracesStore } from '@/stores/traces'
-  import type { Trace } from '@/@Types/Traces'
+  import { computed, onMounted, ref } from 'vue'
+  import { useQueryClient } from '@tanstack/vue-query'
+  import type { Traces } from '@/@Types/Traces'
 
-  const traceStore = useTracesStore()
-
+  const queryClient = useQueryClient()
   const op = ref()
-  const selectedDistances = ref()
-  const distanceMessage = ref('Entre 50 et 300 kms')
-  const selectedElevations = ref()
-  const elevationMessage = ref('Entre 300 et 3500 m D+')
-
-  let traceFilted = defineModel({ required: true })
-
-  const distanceFiltre = ref()
-  const elevationFiltre = ref()
-
-  const filterDistances = () => {
-    distanceFiltre.value = traceStore.filterTraceByParams('distance', selectedDistances)
-    distanceMessage.value = `Entre ${selectedDistances.value[0]} et ${selectedDistances.value[1]} kms`
-    if (!elevationFiltre.value) traceFilted.value = distanceFiltre.value
-    else
-      traceFilted.value = distanceFiltre.value.filter((trace: Trace) =>
-        elevationFiltre.value.includes(trace)
-      )
-  }
-
-  const filterElevations = () => {
-    elevationFiltre.value = traceStore.filterTraceByParams('elevation', selectedElevations)
-    elevationMessage.value = `Entre ${selectedElevations.value[0]} et ${selectedElevations.value[1]} m D+`
-    if (!distanceFiltre.value) traceFilted.value = elevationFiltre.value
-    else
-      traceFilted.value = elevationFiltre.value.filter((trace: Trace) =>
-        distanceFiltre.value.includes(trace)
-      )
-  }
-
-  const resetFilters = () => {
-    traceFilted.value = traceStore.traces
-    selectedDistances.value = ''
-    distanceMessage.value = `Entre 50 et 300 kms`
-    selectedElevations.value = ''
-    elevationMessage.value = `Entre 300 et 3500 m D+`
-  }
 
   const toggle = (event: any) => {
     op.value.toggle(event)
   }
+
+  const selectedDistances = defineModel<number[]>('selectedDistances', {
+    required: true
+  })
+  const selectedElevations = defineModel<number[]>('selectedElevations', { required: true })
+  const queries = defineModel<string>('queries', { required: true })
+
+  const distanceMessage = computed(
+    () => `Entre ${selectedDistances.value[0]} et ${selectedDistances.value[1]} kms`
+  )
+  const elevationMessage = computed(
+    () => `Entre ${selectedElevations.value[0]} et ${selectedElevations.value[1]} m D+`
+  )
+
+  const starts = ref()
+  const finishes = ref()
+  const startSelected = ref()
+  const finishSelected = ref()
+
+  const filter = () => {
+    queries.value = ''
+    queryClient.invalidateQueries({ queryKey: ['traces'] })
+    startSelected.value?.forEach((city: string) => {
+      if (queries.value === '') queries.value += `?start=${city}`
+      else queries.value += `&start=${city}`
+    })
+    finishSelected.value?.forEach((city: string) => {
+      if (queries.value === '') queries.value += `?finish=${city}`
+      else queries.value += `&finish=${city}`
+    })
+  }
+  const restartFilter = () => {
+    selectedDistances.value = [50, 300]
+    selectedElevations.value = [300, 3500]
+    startSelected.value = []
+    finishSelected.value = []
+    queries.value = ''
+    queryClient.invalidateQueries({ queryKey: ['traces'] })
+  }
+
+  onMounted(async () => {
+    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+    let datas: Traces | undefined = queryClient.getQueryData(['traces'])
+    while (!datas) {
+      await wait(1000)
+      datas = queryClient.getQueryData(['traces'])
+    }
+    starts.value = [...new Set(datas.map((trace: { start: string }) => trace.start))]
+    finishes.value = [...new Set(datas.map((trace: { finish: string }) => trace.finish))]
+  })
 </script>
 
 <template>
-  <Button type="button" label="Filtres" @click="toggle" />
+  <Button type="button" label="Filtres" @click="toggle" class="mx-2" />
   <Popover ref="op">
-    <div class="flex flex-col gap-4 w-[26rem]">
-      <div class="flex justify-evenly items-center">
+    <div class="flex flex-wrap gap-4">
+      <div class="flex flex-col justify-center items-center min-w-52">
         <h2>Distance :</h2>
-
-        <Slider
-          v-model="selectedDistances"
-          range
-          :min="50"
-          :max="300"
-          @change="filterDistances()"
-          class="w-1/3"
-        />
+        <Slider v-model="selectedDistances" range :min="50" :max="300" class="w-2/3" />
         <h3>{{ distanceMessage }}</h3>
       </div>
-      <div class="flex justify-evenly items-center">
+      <div class="flex flex-col justify-center items-center min-w-52">
         <h2>Dénivelé :</h2>
-        <Slider
-          v-model="selectedElevations"
-          range
-          :min="300"
-          :max="3500"
-          @change="filterElevations()"
-          class="w-1/3"
-        />
+        <Slider v-model="selectedElevations" range :min="300" :max="3500" class="w-2/3" />
         <h3>{{ elevationMessage }}</h3>
       </div>
-      <Button label="Remise à zéro des filtres" @click="resetFilters" />
+      <MultiSelect
+        v-model="startSelected"
+        :options="starts"
+        placeholder="Ville de départ(s)"
+        display="chip"
+        filter
+        @change="filter"
+      />
+      <MultiSelect
+        v-model="finishSelected"
+        :options="finishes"
+        placeholder="Ville d'arrivée(s)"
+        display="chip"
+        filter
+        @change="filter"
+      />
+      <Button @click="restartFilter">Remise à 0</Button>
     </div>
   </Popover>
 </template>
