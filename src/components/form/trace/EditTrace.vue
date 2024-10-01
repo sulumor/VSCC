@@ -1,19 +1,17 @@
 <script setup lang="ts">
-  import TextInput from '../input/TextInput.vue'
-  import NumberInput from '../input/NumberInput.vue'
   import { getInformationsFromStravaEmbedString } from '@/utils/extractString'
   import { useToast } from 'primevue/usetoast'
   import { useForm } from 'vee-validate'
   import { TraceSchema } from '@/schemas/TraceSchema'
-  import { useTracesStore } from '@/stores/traces'
   import type { Trace } from '@/@Types/Traces'
-  import DeleteButton from '../button/DeleteButton.vue'
-  import CheckBoxInput from '../input/CheckBoxInput.vue'
-  import { errorToast } from '@/utils/toast'
-  import router from '@/router'
 
-  const traceStore = useTracesStore()
+  import { errorToast, successToast } from '@/utils/toast'
+  import { useRouter } from 'vue-router'
+  import { useQueryClient } from '@tanstack/vue-query'
+  import crud from '@/utils/crud'
 
+  const queryClient = useQueryClient()
+  const router = useRouter()
   const toast = useToast()
 
   const props = defineProps<{ trace: Trace }>()
@@ -47,7 +45,21 @@
       return
     }
     const datas = { ...stravaData, ...data }
-    if (await traceStore.editATrace(datas)) router.push('/')
+
+    try {
+      const res = await crud.update(`api/traces/${props.trace.id}`, datas)
+      queryClient.setQueryData(['trace', props.trace.id.toString()], (oldData: Partial<Trace>) => {
+        return {
+          ...oldData,
+          ...res
+        }
+      })
+      queryClient.invalidateQueries({ queryKey: ['traces'] })
+      successToast(toast, 'Votre trace a bien été modifié')
+      router.push('/')
+    } catch (error) {
+      if (error instanceof Error) errorToast(toast, error.message)
+    }
   })
 </script>
 
