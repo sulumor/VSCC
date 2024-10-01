@@ -1,30 +1,44 @@
 <script setup lang="ts">
-  import type { Trace } from '@/@Types/Traces'
-  import StravaCard from '@/components/card/StravaCard.vue'
-  import { useTracesStore } from '@/stores/traces'
+  import BackButton from '@/components/button/BackButton.vue'
+  import crud from '@/utils/crud'
+  import { useQuery } from '@tanstack/vue-query'
   import { useRoute } from 'vue-router'
 
   const route = useRoute()
-  const tracesStore = useTracesStore()
+  const id = route.params.id
 
-  const currentTrace: Trace | undefined = tracesStore.findOneById(route.params.id as string)
+  const getTraceById = async () => await crud.get(`api/traces/${id}`)
+  const {
+    data: trace,
+    isError,
+    error,
+    isLoading
+  } = useQuery({
+    queryKey: ['traces', id.toString()],
+    queryFn: getTraceById,
+    staleTime: 30000
+  })
 </script>
 
 <template>
-  <main class="flex flex-wrap" v-if="currentTrace">
-    <Card class="grow">
-      <template #title>
-        {{ currentTrace?.start }} ->
-        {{ currentTrace?.switch ? currentTrace?.switch + ' -> ' : ' ' }} {{ currentTrace?.finish }}
-      </template>
-      <template #content>
-        <p>Description : {{ currentTrace.description }}</p>
-      </template>
-    </Card>
-    <StravaCard :id="currentTrace.strava_id" :hash="currentTrace.strava_hash" />
-  </main>
-  <main v-else>
-    <Message severity="error"> Nous n'avons pas retrouvé votre trace. Veuillez réessayer </Message>
+  <main>
+    <MessageError v-if="isError" :error="error" />
+    <ProgressSpinner v-if="isLoading" />
+    <div v-if="trace" class="flex flex-col gap-4 justify-center items-center">
+      <BackButton class="self-end" />
+      <Card>
+        <template #title>
+          <TraceTitle :trace="trace" />
+        </template>
+        <template #content>
+          <div class="flex flex-col gap-4 justify-center items-center">
+            <h2 class="text-xl text-center">{{ trace.description }}</h2>
+            <TraceInfo :trace="trace" />
+            <StravaCard :id="trace.strava_id" :hash="trace.strava_hash" />
+          </div>
+        </template>
+      </Card>
+    </div>
   </main>
 </template>
 
