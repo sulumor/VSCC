@@ -28,6 +28,17 @@
   const startSelected = ref()
   const finishSelected = ref()
 
+  onMounted(async () => {
+    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+    let datas: Traces | undefined = queryClient.getQueryData(['traces'])
+    while (!datas) {
+      await wait(1000)
+      datas = queryClient.getQueryData(['traces'])
+    }
+    starts.value = [...new Set(datas.map((trace: { start: string }) => trace.start))]
+    finishes.value = [...new Set(datas.map((trace: { finish: string }) => trace.finish))]
+  })
+
   const filter = () => {
     queries.value = ''
     queryClient.invalidateQueries({ queryKey: ['traces'] })
@@ -48,17 +59,6 @@
     queries.value = ''
     queryClient.invalidateQueries({ queryKey: ['traces'] })
   }
-
-  onMounted(async () => {
-    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-    let datas: Traces | undefined = queryClient.getQueryData(['traces'])
-    while (!datas) {
-      await wait(1000)
-      datas = queryClient.getQueryData(['traces'])
-    }
-    starts.value = [...new Set(datas.map((trace: { start: string }) => trace.start))]
-    finishes.value = [...new Set(datas.map((trace: { finish: string }) => trace.finish))]
-  })
 </script>
 
 <template>

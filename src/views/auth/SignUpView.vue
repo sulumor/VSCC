@@ -1,6 +1,4 @@
-<script setup lang="ts">
-  import SignUpForm from '@/components/form/SignUp.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <h1 class="text-xl font-black text-center mt-4">SE CONNECTER</h1>

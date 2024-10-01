@@ -16,16 +16,14 @@ export const useUsersStore = defineStore('users', () => {
   const isAdmin = computed(() => user.value.is_admin)
 
   const login = async (datas: UserLogin) => {
-    loading.value = true
-
-    const res: Response = await crud.post('auth/login', datas)
-    if (res.status === 200) {
-      localStorage.setItem('token', res.data.accessToken)
-      user.value = jwtDecode(res.data.accessToken)
+    try {
+      const res = await crud.post('auth/login', datas)
+      localStorage.setItem('token', res.accessToken)
+      user.value = jwtDecode(res.accessToken)
       successToast(toast, `${user.value.firstname}, vous êtes bien connecté(e)`)
-    } else errorToast(toast, res.data.error)
-
-    loading.value = false
+    } catch (error) {
+      if (error instanceof Error) errorToast(toast, error.message as string)
+    }
   }
 
   const register = async (datas: UserBody) => {

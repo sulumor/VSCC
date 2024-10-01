@@ -1,6 +1,4 @@
-<script setup lang="ts">
-  import AddTrace from '@/components/form/AddTrace.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <main>

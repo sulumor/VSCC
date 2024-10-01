@@ -7,6 +7,8 @@
   const model = defineModel<string>()
   defineProps<{
     label: string
+    errors?: string
+    aria: string
   }>()
 
   const onUpload = async (event: any) => {
@@ -21,6 +23,7 @@
 
 <template>
   <FileUpload accept="image/*" mode="basic" name="image" :chooseLabel="label" @select="onUpload" />
+  <Message v-if="errors" :id="aria" class="p-error" severity="error">{{ errors }}</Message>
 </template>
 
 <style></style>

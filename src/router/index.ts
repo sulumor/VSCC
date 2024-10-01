@@ -16,19 +16,19 @@ const router = createRouter({
     },
     {
       path: '/new-trace',
-      component: () => import('@/views/trace/AddTraceView.vue'),
-      beforeEnter: () => {
-        const userStore = useUsersStore()
-        if (!userStore.isAuthenticated) return '/'
-      }
+      component: () => import('@/views/trace/AddTraceView.vue')
+      // beforeEnter: () => {
+      //   const userStore = useUsersStore()
+      //   if (!userStore.isAuthenticated) return '/'
+      // }
     },
     {
       path: '/edit-trace/:id',
-      component: () => import('@/views/trace/EditTraceView.vue'),
-      beforeEnter: () => {
-        const userStore = useUsersStore()
-        if (!userStore.isAuthenticated) return '/'
-      }
+      component: () => import('@/views/trace/EditTraceView.vue')
+      // beforeEnter: () => {
+      //   const userStore = useUsersStore()
+      //   if (!userStore.isAuthenticated) return '/'
+      // }
     },
     {
       path: '/login',
@@ -41,6 +41,14 @@ const router = createRouter({
     {
       path: '/reset-password/:id/:token',
       component: () => import('@/views/auth/ResetPasswordView.vue')
+    },
+    {
+      path: '/users',
+      component: () => import('@/views/user/UsersView.vue')
+    },
+    {
+      path: '/edit-user/:id',
+      component: () => import('@/views/user/EditUserView.vue')
     }
   ]
 })

@@ -1,14 +1,15 @@
 <script setup lang="ts">
   import router from '@/router'
-  import { useTracesStore } from '@/stores/traces'
+  import crud from '@/utils/crud'
+  import { errorToast, successToast } from '@/utils/toast'
   import { useConfirm } from 'primevue/useconfirm'
+  import { useToast } from 'primevue/usetoast'
   const props = defineProps<{
     id: number
   }>()
 
   const confirm = useConfirm()
-
-  const traceStore = useTracesStore()
+  const toast = useToast()
 
   const confirmation = () => {
     confirm.require({
@@ -25,8 +26,13 @@
         severity: 'danger'
       },
       accept: async () => {
-        traceStore.deleteATrace(props.id)
-        router.push('/')
+        try {
+          await crud.delete(`api/traces/${props.id}`)
+          successToast(toast, 'Votre trace a bien été supprimé')
+          router.push('/')
+        } catch (error) {
+          if (error instanceof Error) errorToast(toast, error.message)
+        }
       }
     })
   }

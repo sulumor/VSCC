@@ -20,7 +20,8 @@
       {
         label: "Ajouter d'une trace",
         route: '/new-trace',
-        connected: userStore.isAuthenticated
+        // connected: userStore.isAuthenticated
+        connected: true
       },
       {
         label: 'Connexion',

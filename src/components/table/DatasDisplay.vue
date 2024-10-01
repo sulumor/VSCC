@@ -68,9 +68,7 @@
       <div v-if="isPending || isFetching">
         <ProgressSpinner aria-label="Loading" />
       </div>
-      <div v-if="isError">
-        {{ error!.message }}
-      </div>
+      <MessageError v-if="isError" :error="error" />
     </template>
     <template #list="slotProps">
       <div class="flex flex-col">
@@ -119,9 +117,7 @@
             <div class="pt-6 flex flex-col justify-center align-middle gap-8">
               <div class="bg-surface-50 flex justify-center rounded h-32">
                 <CloudinaryImage
-                  :image="
-                    item.image.includes('Screen') ? 'hmmiqsh7isuvovoyp62g' : 'q6sbapsjnvevpxwppifj'
-                  "
+                  :image="item.image.includes('Screen') ? 'hmmiqsh7isuvovoyp62g' : item.image"
                 />
               </div>
               <div class="text-lg font-medium mt-1 h-14">{{ item.start }} -> {{ item.finish }}</div>
@@ -131,7 +127,7 @@
               >
 
               <DetailButton :id="item.id" />
-              <EditButton v-if="userStore.isAuthenticated" :id="item.id" />
+              <EditButton :id="item.id" />
             </div>
           </div>
         </div>

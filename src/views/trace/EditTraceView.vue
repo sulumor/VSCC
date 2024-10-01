@@ -1,24 +1,32 @@
 <script setup lang="ts">
-  import type { Trace } from '@/@Types/Traces'
-  import EditTrace from '@/components/form/EditTrace.vue'
-  import { useTracesStore } from '@/stores/traces'
-
+  import crud from '@/utils/crud'
+  import { useQuery } from '@tanstack/vue-query'
   import { useRoute } from 'vue-router'
 
   const route = useRoute()
-  const tracesStore = useTracesStore()
+  const id = route.params.id
 
-  const currentTrace: Trace | undefined = tracesStore.findOneById(route.params.id as string)
+  const getTraceById = async () => await crud.get(`api/traces/${id}`)
+  const {
+    data: trace,
+    isError,
+    error,
+    isLoading
+  } = useQuery({
+    queryKey: ['trace', id.toString()],
+    queryFn: getTraceById
+  })
 </script>
 
 <template>
   <main>
-    <h1 class="text-xl font-black text-center">
-      EDITER LA TRACE {{ currentTrace?.start }} ->
-      {{ currentTrace?.switch ? currentTrace?.switch + ' -> ' : ' ' }} {{ currentTrace?.finish }}
-    </h1>
-    <div v-if="!currentTrace">Une erreur est survenu. Veuillez réessayer plus tard</div>
-    <EditTrace v-else :trace="currentTrace" />
+    <MessageError v-if="isError" :error="error" />
+    <ProgressSpinner v-if="isLoading" />
+    <div v-if="trace" class="flex flex-col gap-3">
+      <BackButton class="self-end w-auto" />
+      <TraceTitle :trace="trace" />
+      <EditTrace :trace="trace" />
+    </div>
   </main>
 </template>
 

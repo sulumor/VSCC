@@ -1,19 +1,15 @@
 <script setup lang="ts">
-  import TextInput from '../input/TextInput.vue'
-  import NumberInput from '../input/NumberInput.vue'
   import { getInformationsFromStravaEmbedString } from '@/utils/extractString'
   import { useToast } from 'primevue/usetoast'
   import router from '@/router'
   import { useForm } from 'vee-validate'
   import { TraceSchema } from '@/schemas/TraceSchema'
-  import { useTracesStore } from '@/stores/traces'
-  import CheckBoxInput from '../input/CheckBoxInput.vue'
   import { errorToast } from '@/utils/toast'
-
-  const traceStore = useTracesStore()
+  import crud from '@/utils/crud'
+  import { useQueryClient } from '@tanstack/vue-query'
 
   const toast = useToast()
-
+  const queryClient = useQueryClient()
   const { defineField, handleSubmit, resetForm, errors } = useForm({
     validationSchema: TraceSchema
   })
@@ -39,9 +35,14 @@
       return
     }
     const datas = { ...stravaData, ...data }
-    if (await traceStore.addNewTrace(datas)) {
+
+    try {
+      await crud.post('api/traces', datas)
+      queryClient.invalidateQueries({ queryKey: ['traces'] })
       router.push('/')
       resetForm()
+    } catch (error) {
+      if (error instanceof Error) errorToast(toast, error.message)
     }
   })
 </script>
@@ -99,7 +100,12 @@
         class="basis-1/2"
       />
     </div>
-    <UploadImage v-model="image" label="Ajouter une image" />
+    <UploadImage
+      v-model="image"
+      label="Ajouter une image"
+      :errors="errors.image"
+      aria="image-help"
+    />
     <div class="flex justify-evenly flex-wrap gap-8">
       <TextArea
         id="description"
