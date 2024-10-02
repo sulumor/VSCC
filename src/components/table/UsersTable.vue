@@ -1,30 +1,23 @@
 <script setup lang="ts">
-  import { ref, watchEffect } from 'vue'
-  import crud from '@/utils/crud'
-  import DeleteUserButton from '../button/DeleteUserButton.vue'
-  import { useQuery } from '@tanstack/vue-query'
-  import axios, { AxiosError } from 'axios'
+  import type { Users } from '@/@Types/Users'
 
-  const getUsers = async () => await crud.getWithToken('api/users')
-
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ['users'],
-    queryFn: getUsers
-  })
+  defineProps<{
+    users: Users
+  }>()
 </script>
 
 <template>
-  <ConfirmDialog />
   <DataTable
-    :value="data"
+    :value="users"
     :globalFilterFields="['start', 'finish', 'elevation', 'distance']"
     filterDisplay="menu"
     dataKey="email"
+    class="mt-4"
   >
     <Column
       field="firstname"
       header="Nom"
-      style="min-width: 12rem"
+      style="min-width: max-content"
       sortable
       :showFilterMatchModes="false"
     >
@@ -32,36 +25,49 @@
         {{ data.firstname }}
       </template>
     </Column>
-    <Column field="email" header="Email" style="min-width: 12rem" :showFilterMatchModes="false">
+    <Column
+      field="email"
+      header="Email"
+      style="min-width: max-content"
+      :showFilterMatchModes="false"
+    >
       <template #body="{ data }">
         {{ data.email }}
       </template>
     </Column>
     <Column
       field="isAdmin"
-      header="Super admin"
-      style="min-width: 12rem"
+      header="Admin"
       :showFilterMatchModes="false"
+      style="text-align: center; max-width: 5rem"
     >
       <template #body="{ data }">
-        {{ data.is_admin }}
+        <i v-if="data.is_admin" class="pi pi-verified green icon"></i>
+        <i v-else class="pi pi-times red icon"></i>
       </template>
     </Column>
 
-    <Column header="En savoir plus">
+    <Column header="Actions">
       <template #body="{ data }">
-        <Button
-          severity="success"
-          label="Éditer cette utilisateur"
-          as="router-link"
-          :to="'/edit-user/' + data.id"
-        />
-        <DeleteUserButton :user="data" />
+        <div class="felx flex-wrap justify-center items-center">
+          <LinkButton label="Je modifie" :to="`/edit-user/${data.id}`" />
+          <DeleteUserButton :user="data" />
+        </div>
       </template>
     </Column>
   </DataTable>
-  <div v-if="isError">{{ error }}</div>
-  <ProgressSpinner v-if="isPending" aria-label="Loading" />
 </template>
 
-<style></style>
+<style scoped>
+  .green {
+    color: green;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+</style>

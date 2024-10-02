@@ -1,9 +1,27 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import crud from '@/utils/crud'
+  import { useQuery } from '@tanstack/vue-query'
+  const getUsers = async () => await crud.getWithToken('api/users')
+
+  const {
+    isPending,
+    isError,
+    data: users,
+    error
+  } = useQuery({
+    queryKey: ['users'],
+    queryFn: getUsers
+  })
+</script>
 
 <template>
   <main>
+    <BackButton class="w-auto self-end" />
     <h1 class="text-xl font-black text-center">LISTING DES UTILISATEURS</h1>
-    <UsersTable class="mt-4" />
+    <MessageError v-if="isError" :error="error" />
+    <ProgressSpinner v-if="isPending" aria-label="Loading" />
+    <UsersTable v-if="users" :users="users" />
+    <ConfirmDialog />
   </main>
 </template>
 

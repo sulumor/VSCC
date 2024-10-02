@@ -1,25 +1,32 @@
 <script setup lang="ts">
   import crud from '@/utils/crud'
-  import { onMounted, ref } from 'vue'
-
+  import { useQuery } from '@tanstack/vue-query'
   import { useRoute } from 'vue-router'
 
   const route = useRoute()
+  const id = route.params.id
 
-  const user = ref()
-  onMounted(async () => {
-    const res = await crud.getWithToken(`api/users/${route.params.id}`)
-    if (res.status === 200) user.value = res.data
+  const getUserById = async () => await crud.getWithToken(`api/users/${id}`)
+  const {
+    data: user,
+    isError,
+    error,
+    isLoading
+  } = useQuery({
+    queryKey: ['user', id.toString()],
+    queryFn: getUserById
   })
 </script>
 
 <template>
   <main>
+    <BackButton class="w-auto self-end" />
     <h1 class="text-xl font-black text-center">
       EDITER L'UTILISATEUR {{ user?.firstname.toUpperCase() }}
     </h1>
-    <div v-if="!user">Une erreur est survenu. Veuillez réessayer plus tard</div>
-    <EditUser v-else :user="user" />
+    <ErrorMessage v-if="isError" :error="error" />
+    <ProgressSpinner v-if="isLoading" aria-label="loading" />
+    <EditUser v-if="user" :user="user" />
   </main>
 </template>
 

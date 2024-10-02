@@ -20,13 +20,11 @@
 
 <template>
   <main>
+    <BackButton class="self-end w-auto" />
+    <TraceTitle :trace="trace" />
     <MessageError v-if="isError" :error="error" />
-    <ProgressSpinner v-if="isLoading" />
-    <div v-if="trace" class="flex flex-col gap-3">
-      <BackButton class="self-end w-auto" />
-      <TraceTitle :trace="trace" />
-      <EditTrace :trace="trace" />
-    </div>
+    <ProgressSpinner v-if="isLoading" aria-label="loading" />
+    <EditTrace v-if="trace" :trace="trace" />
   </main>
 </template>
 

@@ -14,9 +14,8 @@
     error,
     isLoading
   } = useQuery({
-    queryKey: ['traces', id.toString()],
-    queryFn: getTraceById,
-    staleTime: 30000
+    queryKey: ['trace', id.toString()],
+    queryFn: getTraceById
   })
 </script>
 
