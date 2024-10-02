@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { EmailSchema } from '@/schemas/EmailSchema'
   import { useForm } from 'vee-validate'
-  import TextInput from '../input/TextInput.vue'
   import crud from '@/utils/crud'
   import { useToast } from 'primevue/usetoast'
   import { errorToast, successToast } from '@/utils/toast'
@@ -14,9 +13,12 @@
   const toast = useToast()
 
   const onSubmit = handleSubmit(async (values) => {
-    const res = await crud.post('auth/forgot_password', values)
-    if (res.status === 204) successToast(toast, 'Un email avec le lien à suivre vous a été envoyé')
-    else errorToast(toast, res.data.error)
+    try {
+      await crud.post('auth/forgot_password', values)
+      successToast(toast, `Un email avec le lien à suivre vous a été envoyé`)
+    } catch (error) {
+      if (error instanceof Error) errorToast(toast, error.message)
+    }
     resetForm()
   })
 </script>

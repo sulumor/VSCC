@@ -16,18 +16,20 @@
   const route = useRoute()
 
   const onSubmit = handleSubmit(async (values) => {
-    const res = await crud.post('auth/reset_password', {
-      id: route.params.id as string,
-      token: route.params.token as string,
-      ...values
-    })
-    if (res.status === 204) {
+    try {
+      await crud.post('auth/reset_password', {
+        id: route.params.id as string,
+        token: route.params.token as string,
+        ...values
+      })
       successToast(
         toast,
         'Votre mot de passe à bien été modifié. Vous pouvez vous connecter de nouveau'
       )
       router.push('/login')
-    } else errorToast(toast, res.data.error)
+    } catch (error) {
+      if (error instanceof Error) errorToast(toast, error.message)
+    }
     resetForm()
   })
 </script>

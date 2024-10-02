@@ -15,13 +15,12 @@
       {
         label: 'Utilisateurs',
         route: '/users',
-        connected: true
+        connected: userStore.isAdmin
       },
       {
         label: "Ajouter d'une trace",
         route: '/new-trace',
-        // connected: userStore.isAuthenticated
-        connected: true
+        connected: userStore.isAuthenticated
       },
       {
         label: 'Connexion',

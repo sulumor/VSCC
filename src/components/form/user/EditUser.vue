@@ -1,14 +1,19 @@
 <script setup lang="ts">
-  import TextInput from '../input/TextInput.vue'
   import { useToast } from 'primevue/usetoast'
   import { useForm } from 'vee-validate'
 
-  import CheckBoxInput from '../input/CheckBoxInput.vue'
   import type { User } from '@/@Types/Users'
   import { UserSchema } from '@/schemas/UserSchema'
   import crud from '@/utils/crud'
+  import { errorToast, successToast } from '@/utils/toast'
+  import { useRouter } from 'vue-router'
+  import { useQueryClient } from '@tanstack/vue-query'
+  import EditPasswordButton from '@/components/button/EditPasswordButton.vue'
 
   const props = defineProps<{ user: User }>()
+  const toast = useToast()
+  const router = useRouter()
+  const queryClient = useQueryClient()
 
   const { defineField, handleSubmit, errors } = useForm({
     validationSchema: UserSchema,
@@ -23,11 +28,22 @@
 
   const onSubmit = handleSubmit(async (values) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    console.log(values)
-
     const { id, created_at, updated_at, ...data } = values
-    const res = await crud.update(`api/users/${id}`, data)
-    console.log(res)
+
+    try {
+      const res = await crud.update(`api/users/${id}`, data)
+      queryClient.setQueryData(['user', props.user.id.toString()], (oldData: Partial<User>) => {
+        return {
+          ...oldData,
+          ...res
+        }
+      })
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+      successToast(toast, `L'utilisateur ${res.firstname} a bien été modifié`)
+      router.push('/users')
+    } catch (error) {
+      if (error instanceof Error) errorToast(toast, error.message)
+    }
   })
 </script>
 
@@ -52,7 +68,10 @@
       />
     </div>
 
-    <CheckBoxInput v-model="isAdmin" id="isAdmin" label="Est administrateur" class="basis-1/2" />
+    <div class="flex justify-evenly gap-3">
+      <CheckBoxInput v-model="isAdmin" id="isAdmin" label="Est administrateur" class="basis-1/2" />
+      <EditPasswordButton :user="props.user" />
+    </div>
 
     <Button type="submit" class="w-full mt-4">Je modifie cette utilisateur</Button>
   </form>

@@ -9,7 +9,15 @@ import ToastService from 'primevue/toastservice'
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice'
 import Lara from '@primevue/themes/lara'
-import { VueQueryPlugin } from '@tanstack/vue-query'
+import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 30000
+    }
+  }
+})
 
 const app = createApp(App)
 app.use(ToastService)
@@ -25,7 +33,7 @@ app.use(PrimeVue, {
   }
 })
 app.use(createPinia())
-app.use(VueQueryPlugin)
+app.use(VueQueryPlugin, { queryClient })
 app.use(router)
 
 app.mount('#app')
