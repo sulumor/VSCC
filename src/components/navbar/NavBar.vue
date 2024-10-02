@@ -8,11 +8,6 @@
   watchEffect(() => {
     items.value = [
       {
-        label: 'Accueil',
-        route: '/',
-        connected: true
-      },
-      {
         label: 'Utilisateurs',
         route: '/users',
         connected: userStore.isAdmin

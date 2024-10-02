@@ -2,7 +2,9 @@
 
 <template>
   <div>
-    <img src="@/assets/logo.png" alt="" />
+    <RouterLink to="/">
+      <img src="@/assets/logo.png" alt="" />
+    </RouterLink>
   </div>
 </template>
 

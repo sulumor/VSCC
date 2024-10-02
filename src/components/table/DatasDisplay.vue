@@ -80,7 +80,7 @@
                 >{{ item.distance }} km - {{ item.elevation }} m D+</span
               >
 
-              <DetailButton :id="item.id" />
+              <LinkButton :to="`/${item.id}`" label="Voir les détails" severity="secondary" />
               <LinkButton
                 v-if="userStore.isAuthenticated"
                 :to="`/edit-trace/${item.id}`"
