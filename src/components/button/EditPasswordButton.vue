@@ -3,23 +3,20 @@
   import { useUsersStore } from '@/stores/users'
   import crud from '@/utils/crud'
   import { errorToast, successToast } from '@/utils/toast'
-  import { useQueryClient } from '@tanstack/vue-query'
   import { useConfirm } from 'primevue/useconfirm'
   import { useToast } from 'primevue/usetoast'
-
   const props = defineProps<{
     user: User
   }>()
 
   const confirm = useConfirm()
   const toast = useToast()
-  const queryClient = useQueryClient()
   const userStore = useUsersStore()
 
   const confirmation = () => {
     confirm.require({
-      message: `Suis-je sûr de bien vouloir supprimer ${props.user.firstname} ?`,
-      header: 'Confirmation de suppression',
+      message: `Suis-je sûr de bien vouloir faire une demande de modification de mot de passe pour ${props.user.firstname} ?`,
+      header: 'Confirmation de changement de mot de passe',
       rejectLabel: 'Annuler',
       rejectProps: {
         label: 'Annuler',
@@ -27,14 +24,16 @@
         outlined: true
       },
       acceptProps: {
-        label: 'Supprimer',
-        severity: 'danger'
+        label: 'Confirmer',
+        severity: 'info'
       },
       accept: async () => {
         try {
-          await crud.delete(`api/users/${props.user.id}`)
-          queryClient.invalidateQueries({ queryKey: ['users'] })
-          successToast(toast, `${props.user.firstname} a bien été suppprimé`)
+          await crud.post('auth/forgot_password', { email: props.user.email })
+          successToast(
+            toast,
+            `${userStore.user.firstname}, un email avec le lien à suivre a été envoyé à ${props.user.firstname}`
+          )
         } catch (error) {
           if (error instanceof Error) errorToast(toast, error.message)
         }
@@ -44,13 +43,8 @@
 </script>
 
 <template>
-  <Button
-    @click="confirmation"
-    severity="danger"
-    outline
-    label="Je supprime"
-    :disabled="props.user.id === userStore.user.id"
-  />
+  <ConfirmDialog />
+  <Button @click="confirmation" severity="info" outline label="Changement de mot de passe" />
 </template>
 
 <style></style>
