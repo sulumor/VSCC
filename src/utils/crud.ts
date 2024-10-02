@@ -118,9 +118,12 @@ class Crud {
     if (!token) return
     const tokenDecrypted = jwtDecode(token)
     if (tokenDecrypted.exp! < Math.floor(Date.now() / 1000)) {
-      const res = await this.get('auth/refresh_token')
-      if (res.status === 200) localStorage.setItem('token', res.data.accessToken)
-      else localStorage.clear()
+      try {
+        const res = await this.get('auth/refresh_token')
+        localStorage.setItem('token', res.accessToken)
+      } catch (error) {
+        localStorage.clear()
+      }
     }
   }
 }

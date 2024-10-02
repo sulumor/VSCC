@@ -16,19 +16,19 @@ const router = createRouter({
     },
     {
       path: '/new-trace',
-      component: () => import('@/views/trace/AddTraceView.vue')
-      // beforeEnter: () => {
-      //   const userStore = useUsersStore()
-      //   if (!userStore.isAuthenticated) return '/'
-      // }
+      component: () => import('@/views/trace/AddTraceView.vue'),
+      beforeEnter: () => {
+        const userStore = useUsersStore()
+        if (!userStore.isAuthenticated) return '/'
+      }
     },
     {
       path: '/edit-trace/:id',
-      component: () => import('@/views/trace/EditTraceView.vue')
-      // beforeEnter: () => {
-      //   const userStore = useUsersStore()
-      //   if (!userStore.isAuthenticated) return '/'
-      // }
+      component: () => import('@/views/trace/EditTraceView.vue'),
+      beforeEnter: () => {
+        const userStore = useUsersStore()
+        if (!userStore.isAuthenticated) return '/'
+      }
     },
     {
       path: '/login',
@@ -44,7 +44,11 @@ const router = createRouter({
     },
     {
       path: '/users',
-      component: () => import('@/views/user/UsersView.vue')
+      component: () => import('@/views/user/UsersView.vue'),
+      beforeEnter: () => {
+        const userStore = useUsersStore()
+        if (!userStore.isAdmin) return '/'
+      }
     },
     {
       path: '/edit-user/:id',

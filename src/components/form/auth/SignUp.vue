@@ -2,9 +2,9 @@
   import { LoginSchema } from '@/schemas/LoginSchema'
   import { useUsersStore } from '@/stores/users'
   import { useForm } from 'vee-validate'
-  import TextInput from '../input/TextInput.vue'
-  import PasswordInput from '../input/PasswordInput.vue'
   import type { UserLogin } from '@/@Types/Users'
+  import TextInput from '@/components/input/TextInput.vue'
+  import PasswordInput from '@/components/input/PasswordInput.vue'
 
   const userStore = useUsersStore()
   const { defineField, handleSubmit, resetForm, errors } = useForm({

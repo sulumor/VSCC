@@ -1,21 +1,16 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue'
-  import type { Trace } from '@/@Types/Traces'
+  import type { Trace, Traces } from '@/@Types/Traces'
   import { useUsersStore } from '@/stores/users'
   import CloudinaryImage from '../image/CloudinaryImage.vue'
-  import { useQuery } from '@tanstack/vue-query'
-  import crud from '@/utils/crud'
   import SortFilter from '../filters/SortFilter.vue'
   import DataFilter from '../filters/DataFilter.vue'
 
   const userStore = useUsersStore()
-  let queries: string = ''
-
-  const getTraces = async () => await crud.get(`api/traces${queries}`)
-  const { data, isError, error, isPending, isFetching } = useQuery({
-    queryKey: ['traces'],
-    queryFn: getTraces
-  })
+  const queries = defineModel<string>('queries', { required: true })
+  const props = defineProps<{
+    traces: Traces
+  }>()
 
   const rows = window.innerWidth > 640 ? 8 : 4
   const layout = ref<'grid' | 'list' | undefined>(window.innerWidth > 640 ? 'grid' : 'list')
@@ -28,8 +23,8 @@
   const selectedElevations = ref([300, 3500])
 
   const filteredData = computed(() => {
-    if (!data.value) return []
-    return data.value.filter((trace: Trace) => {
+    if (!props.traces) return []
+    return props.traces.filter((trace: Trace) => {
       if (
         trace.distance > selectedDistances.value[0] &&
         trace.distance < selectedDistances.value[1] &&
@@ -64,12 +59,7 @@
       />
     </template>
 
-    <template #empty>
-      <div v-if="isPending || isFetching">
-        <ProgressSpinner aria-label="Loading" />
-      </div>
-      <MessageError v-if="isError" :error="error" />
-    </template>
+    <template #empty> </template>
     <template #list="slotProps">
       <div class="flex flex-col">
         <div v-for="(item, index) in slotProps.items" :key="index">
@@ -91,7 +81,11 @@
               >
 
               <DetailButton :id="item.id" />
-              <EditButton v-if="userStore.isAuthenticated" :id="item.id" />
+              <LinkButton
+                v-if="userStore.isAuthenticated"
+                :to="`/edit-trace/${item.id}`"
+                label="Éditer cette trace"
+              />
             </div>
           </div>
         </div>
@@ -99,13 +93,7 @@
     </template>
 
     <template #grid="slotProps">
-      <div v-if="isFetching">
-        <ProgressSpinner />
-      </div>
-      <div v-if="isError">
-        {{ error!.message }}
-      </div>
-      <div v-else class="grid grid-cols-12 gap-4">
+      <div class="grid grid-cols-12 gap-4">
         <div
           v-for="(item, index) in slotProps.items"
           :key="index"
@@ -126,8 +114,12 @@
                 >{{ item.distance }} km - {{ item.elevation }} m D+</span
               >
 
-              <DetailButton :id="item.id" />
-              <EditButton :id="item.id" />
+              <LinkButton :to="`/${item.id}`" label="Voir les détails" severity="secondary" />
+              <LinkButton
+                v-if="userStore.isAuthenticated"
+                :to="`/edit-trace/${item.id}`"
+                label="Éditer cette trace"
+              />
             </div>
           </div>
         </div>
