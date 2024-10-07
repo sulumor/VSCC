@@ -52,7 +52,19 @@ const router = createRouter({
     },
     {
       path: '/edit-user/:id',
-      component: () => import('@/views/user/EditUserView.vue')
+      component: () => import('@/views/user/EditUserView.vue'),
+      beforeEnter: () => {
+        const userStore = useUsersStore()
+        if (!userStore.isAdmin) return '/'
+      }
+    },
+    {
+      path: '/new-user',
+      component: () => import('@/views/user/AddUserView.vue'),
+      beforeEnter: () => {
+        const userStore = useUsersStore()
+        if (!userStore.isAdmin) return '/'
+      }
     }
   ]
 })

@@ -16,7 +16,10 @@
 
 <template>
   <main>
-    <BackButton class="w-auto self-end" />
+    <div class="flex justify-between items-center">
+      <LinkButton severity="info" label="Ajouter un utilisateur" to="/new-user" class="w-auto" />
+      <BackButton class="w-auto" />
+    </div>
     <h1 class="text-xl font-black text-center">LISTING DES UTILISATEURS</h1>
     <MessageError v-if="isError" :error="error" />
     <ProgressSpinner v-if="isPending" aria-label="Loading" />

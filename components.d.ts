@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddTrace: typeof import('./src/components/form/trace/AddTrace.vue')['default']
+    AddUser: typeof import('./src/components/form/user/AddUser.vue')['default']
     BackButton: typeof import('./src/components/button/BackButton.vue')['default']
     Button: typeof import('primevue/button')['default']
     Card: typeof import('primevue/card')['default']

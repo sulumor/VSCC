@@ -2,7 +2,7 @@
   defineProps<{
     to: string
     label: string
-    severity?: 'success' | 'severity'
+    severity?: 'success' | 'severity' | 'info'
   }>()
 </script>
 
