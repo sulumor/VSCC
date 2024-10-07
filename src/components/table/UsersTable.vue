@@ -49,7 +49,7 @@
 
     <Column header="Actions">
       <template #body="{ data }">
-        <div class="felx flex-wrap justify-center items-center">
+        <div class="flex flex-wrap justify-start items-center gap-4">
           <LinkButton label="Je modifie" :to="`/edit-user/${data.id}`" />
           <DeleteUserButton :user="data" />
         </div>

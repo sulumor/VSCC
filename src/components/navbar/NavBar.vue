@@ -56,4 +56,8 @@
   </Menubar>
 </template>
 
-<style scoped></style>
+<style scoped>
+  a {
+    color: var(--p-surface-100);
+  }
+</style>

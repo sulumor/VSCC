@@ -23,8 +23,12 @@ const app = createApp(App)
 app.use(ToastService)
 app.use(ConfirmationService)
 app.use(PrimeVue, {
+  ripple: true,
   theme: {
-    preset: Lara
+    preset: Lara,
+    options: {
+      darkModeSelector: 'none'
+    }
   },
   locale: {
     emptySearchMessage: 'Aucun résultat de trouvé',

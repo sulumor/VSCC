@@ -65,7 +65,7 @@
         <div v-for="(item, index) in slotProps.items" :key="index">
           <div
             class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
-            :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }"
+            :class="{ 'border-t border-surface-200 ': index !== 0 }"
           >
             <div class="w-full sm:max-w-96 sm:w-2/3">
               <CloudinaryImage
@@ -99,9 +99,7 @@
           :key="index"
           class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-3 p-2"
         >
-          <div
-            class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col"
-          >
+          <div class="p-6 border border-surface-200 bg-surface-0 rounded flex flex-col">
             <div class="pt-6 flex flex-col justify-center align-middle gap-8">
               <div class="bg-surface-50 flex justify-center rounded h-32">
                 <CloudinaryImage

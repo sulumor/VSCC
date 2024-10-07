@@ -1,29 +1,32 @@
-@import './base.css';
+/* @import './base.css'; */
 
 @import 'primeicons/primeicons.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
 
 #app {
   margin: 0 auto;
   font-weight: normal;
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+:root {
+  --p-navigation-item-focus-background: transparent !important;
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   padding: 1rem 2rem;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
 }
