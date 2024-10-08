@@ -1,19 +1,22 @@
 <script setup lang="ts">
   import { getInformationsFromStravaEmbedString } from '@/utils/extractString'
   import { useToast } from 'primevue/usetoast'
-  import router from '@/router'
+
   import { useForm } from 'vee-validate'
   import { TraceSchema } from '@/schemas/TraceSchema'
-  import { errorToast } from '@/utils/toast'
+  import { errorToast, successToast } from '@/utils/toast'
   import crud from '@/utils/crud'
   import { useQueryClient } from '@tanstack/vue-query'
+  import { useRouter } from 'vue-router'
 
+  const router = useRouter()
   const toast = useToast()
   const queryClient = useQueryClient()
   const { defineField, handleSubmit, resetForm, errors } = useForm({
     validationSchema: TraceSchema
   })
 
+  const [title] = defineField('title')
   const [start] = defineField('start')
   const [finish] = defineField('finish')
   const [isALoop] = defineField('is_a_loop')
@@ -38,6 +41,7 @@
 
     try {
       await crud.post('api/traces', datas)
+      successToast(toast, 'Votre nouvelle trace a bien été enregistrée')
       queryClient.invalidateQueries({ queryKey: ['traces'] })
       router.push('/')
       resetForm()
@@ -49,6 +53,23 @@
 
 <template>
   <form class="p-4 flex flex-col gap-8 md:w-[70%] md:mx-auto md:my-3" @submit="onSubmit">
+    <div class="flex justify-evenly gap-3">
+      <TextInput
+        id="title"
+        label="Titre"
+        v-model="title"
+        aria="title-help"
+        :errors="errors.title"
+        class="basis-1/2"
+      />
+      <UploadImage
+        v-model="image"
+        label="Ajouter une image"
+        :errors="errors.image"
+        aria="image-help"
+        class="basis-1/2"
+      />
+    </div>
     <div class="flex justify-evenly gap-3">
       <TextInput
         id="start"
@@ -100,12 +121,6 @@
         class="basis-1/2"
       />
     </div>
-    <UploadImage
-      v-model="image"
-      label="Ajouter une image"
-      :errors="errors.image"
-      aria="image-help"
-    />
     <div class="flex justify-evenly flex-wrap gap-8">
       <TextArea
         id="description"

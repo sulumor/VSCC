@@ -27,12 +27,13 @@
       <BackButton class="self-end" />
       <Card>
         <template #title>
-          <TraceTitle :trace="trace" />
+          <p class="text-xl text-center">{{ trace.title }}</p>
         </template>
         <template #content>
           <div class="flex flex-col gap-4 justify-center items-center">
             <h2 class="text-xl text-center">{{ trace.description }}</h2>
             <TraceInfo :trace="trace" />
+            <TraceTitle :trace="trace" />
             <StravaCard :id="trace.strava_id" :hash="trace.strava_hash" />
           </div>
         </template>

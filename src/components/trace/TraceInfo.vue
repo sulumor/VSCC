@@ -5,7 +5,7 @@
 </script>
 
 <template>
-  <div class="flex justify-between items-center w-auto gap-2">
+  <div class="flex flex-wrap justify-between items-center w-auto gap-2">
     <div class="flex items-center gap-1">
       <i class="pi pi-map" style="font-size: 1.5rem"></i>
       {{ trace.distance }}km
