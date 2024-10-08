@@ -5,6 +5,7 @@
   import CloudinaryImage from '../image/CloudinaryImage.vue'
   import SortFilter from '../filters/SortFilter.vue'
   import DataFilter from '../filters/DataFilter.vue'
+  import TraceInfo from '../trace/TraceInfo.vue'
 
   const userStore = useUsersStore()
   const queries = defineModel<string>('queries', { required: true })
@@ -100,17 +101,15 @@
           class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-3 p-2"
         >
           <div class="p-6 border border-surface-200 bg-surface-0 rounded flex flex-col">
-            <div class="pt-6 flex flex-col justify-center align-middle gap-8">
+            <div class="pt-6 flex flex-col justify-center gap-8">
               <div class="bg-surface-50 flex justify-center rounded h-32">
                 <CloudinaryImage
                   :image="item.image.includes('Screen') ? 'hmmiqsh7isuvovoyp62g' : item.image"
                 />
               </div>
-              <div class="text-lg font-medium mt-1 h-14">{{ item.start }} -> {{ item.finish }}</div>
+              <TraceTitle :trace="item" />
 
-              <span class="text-2xl font-semibold"
-                >{{ item.distance }} km - {{ item.elevation }} m D+</span
-              >
+              <TraceInfo :trace="item" class="self-center" />
 
               <LinkButton :to="`/${item.id}`" label="Voir les détails" severity="secondary" />
               <LinkButton

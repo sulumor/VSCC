@@ -125,13 +125,16 @@
         aria="description-help"
         :errors="errors.description"
       />
-      <TextArea
-        id="stravaEmbed"
-        v-model="stravaEmbed"
-        label="Intégration Strava"
-        aria="stravaEmbed-help"
-        :errors="errors.stravaEmbed"
-      />
+      <div>
+        <StravaHelper />
+        <TextArea
+          id="stravaEmbed"
+          v-model="stravaEmbed"
+          label="Intégration Strava"
+          aria="stravaEmbed-help"
+          :errors="errors.stravaEmbed"
+        />
+      </div>
     </div>
     <Button type="submit" class="w-full mt-4">Je modifie cette trace</Button>
     <DeleteButton :id="props.trace.id" />

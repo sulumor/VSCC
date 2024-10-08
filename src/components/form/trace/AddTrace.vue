@@ -114,13 +114,16 @@
         aria="description-help"
         :errors="errors.description"
       />
-      <TextArea
-        id="stravaEmbed"
-        v-model="stravaEmbed"
-        label="Intégration Strava"
-        aria="stravaEmbed-help"
-        :errors="errors.stravaEmbed"
-      />
+      <div class="flex gap-4">
+        <TextArea
+          id="stravaEmbed"
+          v-model="stravaEmbed"
+          label="Intégration Strava"
+          aria="stravaEmbed-help"
+          :errors="errors.stravaEmbed"
+        />
+        <StravaHelper />
+      </div>
     </div>
     <Button type="submit" class="w-full mt-4">J'enregistre cette trace</Button>
   </form>
