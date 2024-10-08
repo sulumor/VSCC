@@ -29,4 +29,5 @@ main {
   flex-direction: column;
   gap: 1rem;
   padding: 1rem 2rem;
+  min-height: 76vh;
 }

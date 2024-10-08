@@ -36,6 +36,8 @@ declare module 'vue' {
     EditUser: typeof import('./src/components/form/user/EditUser.vue')['default']
     FileUpload: typeof import('primevue/fileupload')['default']
     FloatLabel: typeof import('primevue/floatlabel')['default']
+    Footer: typeof import('./src/components/footer/Footer.vue')['default']
+    FooterElement: typeof import('./src/components/footer/FooterElement.vue')['default']
     ForgotPassword: typeof import('./src/components/form/auth/ForgotPassword.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']

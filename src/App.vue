@@ -15,6 +15,7 @@
   <NavBar />
   <RouterView />
   <Toast position="top-center" />
+  <FooterElement />
 </template>
 
 <style></style>
