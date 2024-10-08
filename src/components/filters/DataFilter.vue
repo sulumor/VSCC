@@ -52,8 +52,8 @@
     })
   }
   const restartFilter = () => {
-    selectedDistances.value = [50, 300]
-    selectedElevations.value = [300, 3500]
+    selectedDistances.value = [0, 300]
+    selectedElevations.value = [0, 3500]
     startSelected.value = []
     finishSelected.value = []
     queries.value = ''

@@ -19,9 +19,9 @@
   const sortOrder = ref()
   const sortField = ref()
 
-  const selectedDistances = ref([50, 300])
+  const selectedDistances = ref([0, 300])
 
-  const selectedElevations = ref([300, 3500])
+  const selectedElevations = ref([0, 3500])
 
   const filteredData = computed(() => {
     if (!props.traces) return []
@@ -48,16 +48,19 @@
     :rows="rows"
   >
     <template #header>
-      <DataFilter
-        v-model:selectedDistances="selectedDistances"
-        v-model:selectedElevations="selectedElevations"
-        v-model:queries="queries"
-      />
-      <SortFilter
-        v-model:sortKey="sortKey"
-        v-model:sortOrder="sortOrder"
-        v-model:sortField="sortField"
-      />
+      <div class="flex gap-2">
+        <DataFilter
+          v-model:selectedDistances="selectedDistances"
+          v-model:selectedElevations="selectedElevations"
+          v-model:queries="queries"
+        />
+        <SortFilter
+          v-model:sortKey="sortKey"
+          v-model:sortOrder="sortOrder"
+          v-model:sortField="sortField"
+        />
+        <p class="text-base self-center">{{ filteredData.length }} traces disponibles</p>
+      </div>
     </template>
 
     <template #empty> </template>
@@ -68,18 +71,13 @@
             class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
             :class="{ 'border-t border-surface-200 ': index !== 0 }"
           >
-            <div class="w-full sm:max-w-96 sm:w-2/3">
-              <CloudinaryImage
-                :image="item.image.includes('Screen') ? 'hmmiqsh7isuvovoyp62g' : item.image"
-              />
+            <p class="text-xl text-center">{{ item.title }}</p>
+            <div class="bg-surface-50 flex justify-center rounded h-32">
+              <CloudinaryImage :image="item.image" />
             </div>
 
             <div class="flex flex-col justify-between items-center flex-1 gap-6">
-              <div class="text-lg font-medium mt-1 h-14">{{ item.start }} -> {{ item.finish }}</div>
-
-              <span class="text-lg font-semibold"
-                >{{ item.distance }} km - {{ item.elevation }} m D+</span
-              >
+              <TraceInfo :trace="item" class="self-center" />
 
               <LinkButton :to="`/${item.id}`" label="Voir les détails" severity="secondary" />
               <LinkButton
@@ -101,14 +99,11 @@
           class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-3 p-2"
         >
           <div class="p-6 border border-surface-200 bg-surface-0 rounded flex flex-col">
-            <div class="pt-6 flex flex-col justify-center gap-8">
+            <div class="flex flex-col justify-center gap-8">
+              <p class="text-xl text-center">{{ item.title }}</p>
               <div class="bg-surface-50 flex justify-center rounded h-32">
-                <CloudinaryImage
-                  :image="item.image.includes('Screen') ? 'hmmiqsh7isuvovoyp62g' : item.image"
-                />
+                <CloudinaryImage :image="item.image" />
               </div>
-              <TraceTitle :trace="item" />
-
               <TraceInfo :trace="item" class="self-center" />
 
               <LinkButton :to="`/${item.id}`" label="Voir les détails" severity="secondary" />
