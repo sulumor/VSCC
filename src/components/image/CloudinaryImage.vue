@@ -1,7 +1,9 @@
 <script setup lang="ts">
   import { Cloudinary } from '@cloudinary/url-gen'
-  import { autoPad } from '@cloudinary/url-gen/actions/resize'
-  import { auto } from '@cloudinary/url-gen/qualifiers/background'
+  import { format, quality } from '@cloudinary/url-gen/actions/delivery'
+  import { fill } from '@cloudinary/url-gen/actions/resize'
+  import { auto as autoFormat } from '@cloudinary/url-gen/qualifiers/format'
+  import { auto } from '@cloudinary/url-gen/qualifiers/quality'
   import { AdvancedImage } from '@cloudinary/vue'
   import { watchEffect } from 'vue'
 
@@ -20,7 +22,7 @@
   watchEffect(() => {
     myImg = cld.image(props.image)
 
-    myImg.resize(autoPad().background(auto()))
+    myImg.resize(fill().height(128)).delivery(quality(auto())).delivery(format(autoFormat()))
   })
 </script>
 

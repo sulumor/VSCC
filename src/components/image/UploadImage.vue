@@ -22,8 +22,16 @@
 </script>
 
 <template>
-  <FileUpload accept="image/*" mode="basic" name="image" :chooseLabel="label" @select="onUpload" />
-  <Message v-if="errors" :id="aria" class="p-error" severity="error">{{ errors }}</Message>
+  <div>
+    <FileUpload
+      accept="image/*"
+      mode="basic"
+      name="image"
+      :chooseLabel="label"
+      @select="onUpload"
+    />
+    <Message v-if="errors" :id="aria" class="p-error" severity="error">{{ errors }}</Message>
+  </div>
 </template>
 
 <style></style>
