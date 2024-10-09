@@ -7,7 +7,7 @@
 
 <template>
   <RouterLink to="/">
-    <img :src="`/src/assets/${img}.png`" alt="Logo du Vélo Sport Clichois Cyclo" />
+    <img :src="`/${img}.png`" alt="Logo du Vélo Sport Clichois Cyclo" />
   </RouterLink>
 </template>
 

@@ -4,24 +4,24 @@
   const visible = ref(false)
   const helpers = [
     {
-      image: 'src/assets/helper/helperStrava-1.png',
+      image: '/helper/helperStrava-1.png',
       name: 'Etape 1',
       description:
         "Depuis l'application Strava, allez sur le menu Tableau de bord puis Mes itinéraires"
     },
     {
-      image: 'src/assets/helper/helperStrava-2.png',
+      image: '/helper/helperStrava-2.png',
       name: 'Etape 2',
       description: 'Choisissez la trace à ajouter, cliquez sur les trois points puis Intégrer'
     },
     {
-      image: 'src/assets/helper/helperStrava-3.png',
+      image: '/helper/helperStrava-3.png',
       name: 'Etape 3',
       description:
         "Attendre quelques secondes que le data-map-hash apparaisse puis Copier le code d'intégration"
     },
     {
-      image: 'src/assets/helper/helperStrava-4.png',
+      image: '/helper/helperStrava-4.png',
       name: 'Etape 4',
       description: 'Coller le tout dans la partie Intégration Strava'
     }
