@@ -128,4 +128,4 @@ class Crud {
   }
 }
 
-export default new Crud('http://localhost:8080')
+export default new Crud(import.meta.env.VITE_BACKEND_URL)
