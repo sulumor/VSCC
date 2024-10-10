@@ -53,31 +53,31 @@
 
 <template>
   <form class="p-4 flex flex-col gap-8 md:w-[70%] md:mx-auto md:my-3" @submit="onSubmit">
-    <div class="flex justify-evenly gap-3">
+    <div class="flex flex-wrap justify-evenly gap-3">
       <TextInput
         id="title"
         label="Titre"
         v-model="title"
         aria="title-help"
         :errors="errors.title"
-        class="basis-1/2"
+        class="w-full md:basis-1/2"
       />
       <UploadImage
         v-model="image"
         label="Ajouter une image"
         :errors="errors.image"
         aria="image-help"
-        class="basis-1/2"
+        class="w-full md:basis-1/2"
       />
     </div>
-    <div class="flex justify-evenly gap-3">
+    <div class="flex flex-wrap justify-evenly gap-3">
       <TextInput
         id="start"
         label="Départ"
         v-model="start"
         aria="start-help"
         :errors="errors.start"
-        class="basis-1/2"
+        class="w-full md:basis-1/2"
       />
       <TextInput
         id="finish"
@@ -85,21 +85,26 @@
         v-model="finish"
         aria="finish-help"
         :errors="errors.finish"
-        class="basis-1/2"
+        class="w-full md:basis-1/2"
       />
     </div>
-    <div class="flex justify-evenly gap-3">
-      <CheckBoxInput v-model="isALoop" id="isALoop" label="Est une boucle" class="basis-1/2" />
+    <div class="flex flex-wrap justify-evenly gap-3">
+      <CheckBoxInput
+        v-model="isALoop"
+        id="isALoop"
+        label="Est une boucle"
+        class="w-full md:basis-1/2"
+      />
       <TextInput
         id="switch"
         label="Ville de passage"
         v-model="switchCity"
         aria="switch-help"
         :errors="errors.switch"
-        class="basis-1/2"
+        class="w-full md:basis-1/2"
       />
     </div>
-    <div class="flex justify-evenly gap-3">
+    <div class="flex flex-wrap justify-evenly gap-3">
       <NumberInput
         id="distance"
         suffix=" km"
@@ -108,7 +113,7 @@
         aria="distance-help"
         :errors="errors.distance"
         :step="5"
-        class="basis-1/2"
+        class="w-full md:basis-1/2"
       />
       <NumberInput
         id="elevation"
@@ -118,7 +123,7 @@
         aria="elevation-help"
         :errors="errors.elevation"
         :step="50"
-        class="basis-1/2"
+        class="w-full md:basis-1/2"
       />
     </div>
     <div class="flex justify-evenly flex-wrap gap-8">
@@ -128,14 +133,16 @@
         label="Description"
         aria="description-help"
         :errors="errors.description"
+        class="w-full"
       />
-      <div class="flex gap-4">
+      <div class="flex w-full gap-4">
         <TextArea
           id="stravaEmbed"
           v-model="stravaEmbed"
           label="Intégration Strava"
           aria="stravaEmbed-help"
           :errors="errors.stravaEmbed"
+          class="w-full"
         />
         <StravaHelper />
       </div>

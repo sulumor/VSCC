@@ -22,6 +22,7 @@
 
 :root {
   --p-navigation-item-focus-background: transparent !important;
+  --p-menubar-submenu-background: #343838 !important;
 }
 
 main {

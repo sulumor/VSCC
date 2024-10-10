@@ -31,7 +31,12 @@
 <template>
   <div>
     <i class="pi pi-question-circle" style="font-size: 1.5rem" @click="visible = true"></i>
-    <Dialog v-model:visible="visible" modal header="Aide intégration Strava">
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Aide intégration Strava"
+      :style="{ width: '90vw' }"
+    >
       <Carousel :value="helpers" :numVisible="1" :numScroll="1">
         <template #item="slotProps">
           <div class="flex flex-col h-[70vh] gap-6">
@@ -41,7 +46,7 @@
             <img
               :src="slotProps.data.image"
               :alt="slotProps.data.name"
-              class="rounded h-[80%] object-contain"
+              class="rounded h-[60%] object-contain"
             />
             <div class="font-medium text-lg self-center">
               {{ slotProps.data.description }}

@@ -16,7 +16,8 @@
       <Textarea
         :id
         v-model="model"
-        cols="50"
+        autoResize
+        fluid
         :aria-describedby="aria"
         :class="{ 'p-invalid': errors }"
       />
