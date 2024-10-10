@@ -21,6 +21,7 @@
 <template>
   <main>
     <BackButton class="self-end w-auto" />
+    <h1 class="text-xl font-black text-center">MODIFIER LA TRACE</h1>
     <TraceTitle :trace="trace" />
     <MessageError v-if="isError" :error="error" />
     <ProgressSpinner v-if="isLoading" aria-label="loading" />

@@ -25,6 +25,7 @@
     }
   })
 
+  const [title] = defineField('title')
   const [start] = defineField('start')
   const [finish] = defineField('finish')
   const [isALoop] = defineField('is_a_loop')
@@ -65,7 +66,24 @@
 
 <template>
   <form class="p-4 flex flex-col gap-8 md:w-[70%] md:mx-auto my-3" @submit="onSubmit">
-    <div class="flex justify-evenly gap-3">
+    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-3">
+      <TextInput
+        id="title"
+        label="Titre"
+        v-model="title"
+        aria="title-help"
+        :errors="errors.title"
+        class="w-full md:basis-1/2"
+      />
+      <UploadImage
+        v-model="image"
+        label="Modifier l'image"
+        :errors="errors.image"
+        aria="image-help"
+        class="w-full md:basis-1/2"
+      />
+    </div>
+    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-3">
       <TextInput
         id="start"
         label="Départ"
@@ -83,7 +101,7 @@
         class="basis-1/2"
       />
     </div>
-    <div class="flex justify-evenly gap-3">
+    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-3">
       <CheckBoxInput v-model="isALoop" id="isALoop" label="Est une boucle" class="basis-1/2" />
       <TextInput
         id="switch"
@@ -116,24 +134,25 @@
         class="basis-1/2"
       />
     </div>
-    <UploadImage v-model="image" label="Modifier l'image" />
-    <div class="flex justify-evenly flex-wrap gap-8">
+    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-8">
       <TextArea
         id="description"
         v-model="description"
         label="Description"
         aria="description-help"
         :errors="errors.description"
+        class="w-full"
       />
-      <div>
-        <StravaHelper />
+      <div class="flex w-full gap-4">
         <TextArea
           id="stravaEmbed"
           v-model="stravaEmbed"
           label="Intégration Strava"
           aria="stravaEmbed-help"
           :errors="errors.stravaEmbed"
+          class="w-full"
         />
+        <StravaHelper />
       </div>
     </div>
     <Button type="submit" class="w-full mt-4">Je modifie cette trace</Button>
