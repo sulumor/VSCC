@@ -20,6 +20,7 @@ export const useUsersStore = defineStore('users', () => {
     try {
       const res = await crud.post('auth/login', datas)
       localStorage.setItem('token', res.accessToken)
+      localStorage.setItem('refresh-token', res.refreshToken)
       user.value = jwtDecode(res.accessToken)
       router.push('/')
       successToast(toast, `${user.value.firstname}, vous êtes bien connecté(e)`)
@@ -50,10 +51,10 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   const loadUserFromToken = async () => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('refresh-token')) {
       loading.value = true
       try {
-        const res: Response = await crud.getWithToken('auth/user')
+        const res: Response = await crud.getWithRefreshToken('auth/user')
         localStorage.setItem('token', res.accessToken)
         user.value = jwtDecode(res.accessToken)
       } catch (error) {

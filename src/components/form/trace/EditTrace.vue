@@ -161,7 +161,7 @@
       </div>
     </div>
     <Button type="submit" class="w-full mt-4">Je modifie cette trace</Button>
-    <DeleteButton :id="props.trace.id" />
+    <DeleteTraceButton :id="props.trace.id" />
   </form>
 </template>
 

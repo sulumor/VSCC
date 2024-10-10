@@ -32,6 +32,17 @@ class Crud {
     )
   }
 
+  async getWithRefreshToken(path: string): Promise<any> {
+    return await this.handleErrors(
+      axios.get(`${this.BASE_URL}/${path}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refresh-token')}`
+        }
+      })
+    )
+  }
+
   async post(
     path: string,
     body: { [k: string]: string | number | boolean | Date | [] | undefined | null }
@@ -119,7 +130,7 @@ class Crud {
     const tokenDecrypted = jwtDecode(token)
     if (tokenDecrypted.exp! < Math.floor(Date.now() / 1000)) {
       try {
-        const res = await this.get('auth/refresh_token')
+        const res = await this.getWithRefreshToken('auth/refresh_token')
         localStorage.setItem('token', res.accessToken)
       } catch (error) {
         localStorage.clear()
