@@ -53,7 +53,7 @@
 
 <template>
   <form class="p-4 flex flex-col gap-8 md:w-[70%] md:mx-auto md:my-3" @submit="onSubmit">
-    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-3">
+    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-7 md:gap-3">
       <TextInput
         id="title"
         label="Titre"
@@ -70,7 +70,7 @@
         class="w-full md:basis-1/2"
       />
     </div>
-    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-3">
+    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-7 md:gap-3">
       <TextInput
         id="start"
         label="Départ"
@@ -88,7 +88,7 @@
         class="w-full md:basis-1/2"
       />
     </div>
-    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-3">
+    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-7 md:gap-3">
       <CheckBoxInput
         v-model="isALoop"
         id="isALoop"
@@ -104,7 +104,7 @@
         class="w-full md:basis-1/2"
       />
     </div>
-    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-3">
+    <div class="flex flex-wrap md:flex-nowrap justify-evenly gap-7 md:gap-3">
       <NumberInput
         id="distance"
         suffix=" km"
