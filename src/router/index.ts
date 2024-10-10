@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import TraceView from '../views/trace/StravaView.vue'
 import { useUsersStore } from '@/stores/users'
 
 const router = createRouter({
@@ -12,7 +13,8 @@ const router = createRouter({
     },
     {
       path: '/:id',
-      component: () => import('@/views/trace/StravaView.vue')
+      name: 'trace',
+      component: TraceView
     },
     {
       path: '/new-trace',
