@@ -66,6 +66,7 @@ declare module 'vue' {
     ResetPassword: typeof import('./src/components/form/auth/ResetPassword.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchFilter: typeof import('./src/components/filters/SearchFilter.vue')['default']
     Select: typeof import('primevue/select')['default']
     SignUp: typeof import('./src/components/form/auth/SignUp.vue')['default']
     Skeleton: typeof import('primevue/skeleton')['default']

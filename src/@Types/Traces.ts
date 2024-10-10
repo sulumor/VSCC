@@ -1,6 +1,7 @@
 export type Trace = {
   [key: string]: string | number | boolean | Date | undefined
   id: number
+  title: string
   strava_id: string
   strava_hash: string
   start: string

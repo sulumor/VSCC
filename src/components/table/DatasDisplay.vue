@@ -22,6 +22,7 @@
   const selectedDistances = ref([0, 300])
 
   const selectedElevations = ref([0, 3500])
+  const search = ref('')
 
   const filteredData = computed(() => {
     if (!props.traces) return []
@@ -30,7 +31,8 @@
         trace.distance > selectedDistances.value[0] &&
         trace.distance < selectedDistances.value[1] &&
         trace.elevation > selectedElevations.value[0] &&
-        trace.elevation < selectedElevations.value[1]
+        trace.elevation < selectedElevations.value[1] &&
+        trace.title.toLowerCase().includes(search.value.toLowerCase())
       )
         return trace
     })
@@ -48,7 +50,7 @@
     :rows="rows"
   >
     <template #header>
-      <div class="flex gap-2">
+      <div class="flex flex-wrap gap-2">
         <DataFilter
           v-model:selectedDistances="selectedDistances"
           v-model:selectedElevations="selectedElevations"
@@ -59,6 +61,7 @@
           v-model:sortOrder="sortOrder"
           v-model:sortField="sortField"
         />
+        <SearchFilter v-model="search" />
         <p class="text-base self-center">{{ filteredData.length }} traces disponibles</p>
       </div>
     </template>
