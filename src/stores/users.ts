@@ -44,6 +44,7 @@ export const useUsersStore = defineStore('users', () => {
   const logout = async () => {
     await crud.delete('auth/refresh_token')
     localStorage.removeItem('token')
+    localStorage.removeItem('refresh-token')
     user.value = null
     loading.value = false
     router.push('/')
