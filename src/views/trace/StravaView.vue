@@ -5,7 +5,7 @@
   import { useRoute } from 'vue-router'
 
   const route = useRoute()
-  const id = route.params.id
+  const id = Number.parseInt(route.params.id as string, 10)
 
   const getTraceById = async () => await crud.get(`api/traces/${id}`)
   const {

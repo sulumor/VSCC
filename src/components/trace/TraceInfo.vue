@@ -5,17 +5,15 @@
 </script>
 
 <template>
-  <div class="flex flex-wrap justify-between items-center w-auto gap-2">
+  <div class="flex flex-col w-auto gap-2">
     <div class="flex items-center gap-1">
       <i class="pi pi-map" style="font-size: 1.5rem"></i>
       {{ trace.distance }}km
     </div>
-    /
     <div class="flex items-center gap-1">
       <i class="pi pi-sort-up" style="font-size: 1.5rem"></i>
       {{ trace.elevation }}m
     </div>
-    /
     <div v-if="trace.is_a_loop" class="flex items-center gap-1">
       <i class="pi pi-replay" style="font-size: 1.5rem"></i>
       Boucle

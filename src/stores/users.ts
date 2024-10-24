@@ -41,8 +41,7 @@ export const useUsersStore = defineStore('users', () => {
     loading.value = false
   }
 
-  const logout = async () => {
-    await crud.delete('auth/refresh_token')
+  const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('refresh-token')
     user.value = null
@@ -59,7 +58,7 @@ export const useUsersStore = defineStore('users', () => {
         localStorage.setItem('token', res.accessToken)
         user.value = jwtDecode(res.accessToken)
       } catch (error) {
-        if (error instanceof Error) errorToast(toast, error.message)
+        localStorage.clear()
       }
       loading.value = false
     }
