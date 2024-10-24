@@ -10,7 +10,7 @@ export interface UserBody extends UserLogin {
 }
 
 export interface User extends UserBody {
-  id: string
+  id: number
   reset_password_token?: string | null
   is_resetting_password: boolean
   created_at: Date

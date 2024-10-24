@@ -63,6 +63,7 @@ declare module 'vue' {
     Popover: typeof import('primevue/popover')['default']
     ProgressSpinner: typeof import('primevue/progressspinner')['default']
     QuickStart: typeof import('./src/components/QuickStart.vue')['default']
+    Rating: typeof import('primevue/rating')['default']
     ResetPassword: typeof import('./src/components/form/auth/ResetPassword.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

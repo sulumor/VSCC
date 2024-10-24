@@ -4,7 +4,7 @@
   import { useRoute } from 'vue-router'
 
   const route = useRoute()
-  const id = route.params.id
+  const id = Number.parseInt(route.params.id as string, 10)
 
   const getUserById = async () => await crud.getWithToken(`api/users/${id}`)
   const {
@@ -24,7 +24,7 @@
     <h1 class="text-xl font-black text-center">
       EDITER L'UTILISATEUR {{ user?.firstname.toUpperCase() }}
     </h1>
-    <ErrorMessage v-if="isError" :error="error" />
+    <MessageError v-if="isError" :error="error" />
     <ProgressSpinner v-if="isLoading" aria-label="loading" />
     <EditUser v-if="user" :user="user" />
   </main>
